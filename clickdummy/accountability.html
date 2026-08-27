@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HabitForge — Accountability Buddy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: { "emerald-glow": "#10b981", "lime-glow": "#84cc16" },
+          },
+        },
+      };
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-in-up {
+        animation: fadeInUp 0.4s ease forwards;
+      }
+      .glass {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-gray-50 text-gray-800 dark:bg-gray-950 dark:text-gray-100 min-h-screen pb-24 transition-colors duration-300"
+  >
+    <!-- ─── Top Bar ─── -->
+    <header
+      class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 glass border-b border-gray-200 dark:border-gray-800"
+    >
+      <div
+        class="max-w-2xl mx-auto flex items-center justify-between px-4 h-14"
+      >
+        <div class="flex items-center gap-2">
+          <div
+            class="w-9 h-9 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-xl flex items-center justify-center"
+          >
+            <i class="fas fa-bolt text-white text-sm"></i>
+          </div>
+          <span
+            class="text-lg font-extrabold bg-gradient-to-r from-emerald-500 to-lime-500 bg-clip-text text-transparent"
+            >HabitForge</span
+          >
+        </div>
+        <button
+          onclick="toggleTheme()"
+          class="w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:scale-110 transition"
+        >
+          <i id="theme-icon" class="fas fa-sun text-yellow-400"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="max-w-2xl mx-auto px-4 pt-6 space-y-6">
+      <!-- ─── Page Title ─── -->
+      <div class="fade-in-up">
+        <h1 class="text-2xl font-extrabold text-gray-800 dark:text-gray-100">
+          Accountability Buddy
+        </h1>
+        <p class="text-sm text-gray-400 mt-1">
+          Stay motivated together — share progress with a partner.
+        </p>
+      </div>
+
+      <!-- ─── Opt-in Toggle ─── -->
+      <section
+        class="bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-200 dark:border-gray-800 shadow-sm fade-in-up"
+        style="animation-delay: 0.1s"
+      >
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 bg-purple-100 dark:bg-purple-500/20 rounded-xl flex items-center justify-center"
+            >
+              <i
+                class="fas fa-user-group text-purple-600 dark:text-purple-400"
+              ></i>
+            </div>
+            <div>
+              <p class="font-bold text-gray-800 dark:text-gray-100">
+                Buddy System
+              </p>
+              <p class="text-xs text-gray-400">
+                Get matched with an accountability partner
+              </p>
+            </div>
+          </div>
+          <button
+            id="buddy-toggle"
+            onclick="handleBuddyToggle()"
+            class="relative w-14 h-8 rounded-full transition-colors duration-300 flex-shrink-0"
+          >
+            <div
+              id="buddy-toggle-knob"
+              class="absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all duration-300"
+            ></div>
+          </button>
+        </div>
+      </section>
+
+      <!-- ─── Buddy Content (shown when enabled) ─── -->
+      <div id="buddy-content">
+        <!-- ─── Your Buddy ─── -->
+        <section
+          class="bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-200 dark:border-gray-800 shadow-sm fade-in-up mb-6"
+          style="animation-delay: 0.2s"
+        >
+          <h2
+            class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4"
+          >
+            Your Buddy
+          </h2>
+          <div class="flex items-center gap-4">
+            <div class="relative">
+              <img
+                src="https://api.dicebear.com/9.x/avataaars/svg?seed=Sarah&backgroundColor=b6e3f4"
+                alt="Buddy avatar"
+                class="w-14 h-14 rounded-full bg-gray-200 dark:bg-gray-800 border-2 border-emerald-400"
+              />
+              <div
+                class="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white dark:border-gray-900"
+              ></div>
+            </div>
+            <div class="flex-1">
+              <p class="font-bold text-gray-800 dark:text-gray-100">Sarah M.</p>
+              <p
+                class="text-xs text-emerald-600 dark:text-emerald-400 font-medium"
+              >
+                Online • 12-day streak 🔥
+              </p>
+            </div>
+            <button
+              class="px-4 py-2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-sm font-bold rounded-xl hover:bg-emerald-200 dark:hover:bg-emerald-500/30 transition"
+            >
+              <i class="fas fa-comment mr-1"></i> Chat
+            </button>
+          </div>
+        </section>
+
+        <!-- ─── Buddy Feed ─── -->
+        <section class="space-y-4 fade-in-up" style="animation-delay: 0.3s">
+          <h2
+            class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+          >
+            Buddy Feed
+          </h2>
+
+          <!-- Feed Item 1 -->
+          <div
+            class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden"
+          >
+            <div class="p-4">
+              <div class="flex items-center gap-3 mb-3">
+                <img
+                  src="https://api.dicebear.com/9.x/avataaars/svg?seed=Sarah&backgroundColor=b6e3f4"
+                  alt=""
+                  class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-800"
+                />
+                <div>
+                  <p class="text-sm font-bold text-gray-800 dark:text-gray-100">
+                    Sarah M.
+                  </p>
+                  <p class="text-[11px] text-gray-400">2 hours ago</p>
+                </div>
+                <div
+                  class="ml-auto flex items-center gap-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold px-2.5 py-1 rounded-full"
+                >
+                  <i class="fas fa-check-circle"></i> Completed
+                </div>
+              </div>
+              <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">
+                Just finished my morning run! 🏃‍♀️ 5km done before 7am. The
+                sunrise was beautiful today.
+              </p>
+              <div
+                class="rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 h-48 flex items-center justify-center"
+              >
+                <div class="text-center">
+                  <i
+                    class="fas fa-image text-4xl text-gray-300 dark:text-gray-600 mb-2"
+                  ></i>
+                  <p class="text-xs text-gray-400">Photo check-in</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="border-t border-gray-100 dark:border-gray-800 px-4 py-3 flex items-center gap-4"
+            >
+              <button
+                class="flex items-center gap-1.5 text-gray-400 hover:text-red-500 transition text-sm"
+              >
+                <i class="far fa-heart"></i> <span>12</span>
+              </button>
+              <button
+                class="flex items-center gap-1.5 text-gray-400 hover:text-blue-500 transition text-sm"
+              >
+                <i class="far fa-comment"></i> <span>3</span>
+              </button>
+              <button
+                class="flex items-center gap-1.5 text-gray-400 hover:text-emerald-500 transition text-sm"
+              >
+                <i class="fas fa-hands-clapping"></i> <span>Cheer</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Feed Item 2 -->
+          <div
+            class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden"
+          >
+            <div class="p-4">
+              <div class="flex items-center gap-3 mb-3">
+                <img
+                  src="https://api.dicebear.com/9.x/avataaars/svg?seed=Sarah&backgroundColor=b6e3f4"
+                  alt=""
+                  class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-800"
+                />
+                <div>
+                  <p class="text-sm font-bold text-gray-800 dark:text-gray-100">
+                    Sarah M.
+                  </p>
+                  <p class="text-[11px] text-gray-400">Yesterday at 9:15 PM</p>
+                </div>
+                <div
+                  class="ml-auto flex items-center gap-1 bg-yellow-50 dark:bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 text-xs font-bold px-2.5 py-1 rounded-full"
+                >
+                  <i class="fas fa-fire"></i> Streak: 11 days
+                </div>
+              </div>
+              <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">
+                Finished reading Chapter 4 of "Atomic Habits" 📚 Key insight:
+                make the habit obvious, attractive, easy, and satisfying.
+              </p>
+              <div
+                class="rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 h-48 flex items-center justify-center"
+              >
+                <div class="text-center">
+                  <i
+                    class="fas fa-book-open text-4xl text-gray-300 dark:text-gray-600 mb-2"
+                  ></i>
+                  <p class="text-xs text-gray-400">Reading check-in</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="border-t border-gray-100 dark:border-gray-800 px-4 py-3 flex items-center gap-4"
+            >
+              <button class="flex items-center gap-1.5 text-red-500 text-sm">
+                <i class="fas fa-heart"></i> <span>24</span>
+              </button>
+              <button
+                class="flex items-center gap-1.5 text-gray-400 hover:text-blue-500 transition text-sm"
+              >
+                <i class="far fa-comment"></i> <span>7</span>
+              </button>
+              <button
+                class="flex items-center gap-1.5 text-gray-400 hover:text-emerald-500 transition text-sm"
+              >
+                <i class="fas fa-hands-clapping"></i> <span>Cheer</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Feed Item 3 -->
+          <div
+            class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden"
+          >
+            <div class="p-4">
+              <div class="flex items-center gap-3 mb-3">
+                <img
+                  src="https://api.dicebear.com/9.x/avataaars/svg?seed=Sarah&backgroundColor=b6e3f4"
+                  alt=""
+                  class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-800"
+                />
+                <div>
+                  <p class="text-sm font-bold text-gray-800 dark:text-gray-100">
+                    Sarah M.
+                  </p>
+                  <p class="text-[11px] text-gray-400">2 days ago</p>
+                </div>
+              </div>
+              <p class="text-sm text-gray-700 dark:text-gray-300">
+                Tracked all my expenses for the day. Total: $23.50. Staying
+                under budget! 💰
+              </p>
+            </div>
+            <div
+              class="border-t border-gray-100 dark:border-gray-800 px-4 py-3 flex items-center gap-4"
+            >
+              <button
+                class="flex items-center gap-1.5 text-gray-400 hover:text-red-500 transition text-sm"
+              >
+                <i class="far fa-heart"></i> <span>8</span>
+              </button>
+              <button
+                class="flex items-center gap-1.5 text-gray-400 hover:text-blue-500 transition text-sm"
+              >
+                <i class="far fa-comment"></i> <span>1</span>
+              </button>
+              <button
+                class="flex items-center gap-1.5 text-gray-400 hover:text-emerald-500 transition text-sm"
+              >
+                <i class="fas fa-hands-clapping"></i> <span>Cheer</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ─── Disabled State ─── -->
+      <div id="buddy-disabled" class="hidden text-center py-16 fade-in-up">
+        <div class="text-6xl mb-4">🤝</div>
+        <h2 class="text-xl font-bold text-gray-600 dark:text-gray-300 mb-2">
+          Buddy System Disabled
+        </h2>
+        <p class="text-sm text-gray-400 max-w-sm mx-auto">
+          Turn on the Buddy System to get matched with an accountability partner
+          and share your progress.
+        </p>
+      </div>
+    </main>
+
+    <!-- ─── Bottom Navigation ─── -->
+    <nav
+      id="bottom-nav"
+      class="fixed bottom-0 inset-x-0 bg-white/90 dark:bg-gray-900/90 glass border-t border-gray-200 dark:border-gray-800 z-50"
+    ></nav>
+
+    <script src="app.js"></script>
+    <script>
+      (function init() {
+        initTheme();
+        renderBottomNav("buddy");
+        renderBuddyState();
+      })();
+
+      function renderBuddyState() {
+        const data = getData();
+        const enabled = data.buddyEnabled !== false;
+        const toggle = document.getElementById("buddy-toggle");
+        const knob = document.getElementById("buddy-toggle-knob");
+        const content = document.getElementById("buddy-content");
+        const disabled = document.getElementById("buddy-disabled");
+
+        if (enabled) {
+          toggle.className =
+            "relative w-14 h-8 rounded-full bg-emerald-500 transition-colors duration-300 flex-shrink-0";
+          knob.style.left = "30px";
+          content.classList.remove("hidden");
+          disabled.classList.add("hidden");
+        } else {
+          toggle.className =
+            "relative w-14 h-8 rounded-full bg-gray-300 dark:bg-gray-700 transition-colors duration-300 flex-shrink-0";
+          knob.style.left = "4px";
+          content.classList.add("hidden");
+          disabled.classList.remove("hidden");
+        }
+      }
+
+      function handleBuddyToggle() {
+        updateData((d) => {
+          d.buddyEnabled = !d.buddyEnabled;
+        });
+        renderBuddyState();
+      }
+    </script>
+  </body>
+</html>

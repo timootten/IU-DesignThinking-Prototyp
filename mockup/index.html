@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Habit Tracker - Dashboard</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Heroicons CDN -->
+    <script
+      src="https://unpkg.com/heroicons@2.0.18/24/outline/index.js"
+      type="module"
+    ></script>
+
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "emerald-glow": "#10b981",
+              "lime-glow": "#84cc16",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-950 text-gray-100 min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo & Brand -->
+          <div class="flex items-center space-x-3">
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center"
+            >
+              <i class="fas fa-bolt text-gray-900 text-xl"></i>
+            </div>
+            <span
+              class="text-xl font-bold bg-gradient-to-r from-emerald-400 to-lime-400 bg-clip-text text-transparent"
+            >
+              HabitForge
+            </span>
+          </div>
+
+          <!-- Navigation Links -->
+          <div class="flex items-center space-x-6">
+            <a href="index.html" class="text-emerald-400 font-medium">
+              <i class="fas fa-home mr-2"></i>Dashboard
+            </a>
+            <a
+              href="add-habit.html"
+              class="text-gray-400 hover:text-gray-200 transition"
+            >
+              <i class="fas fa-plus-circle mr-2"></i>Add Habit
+            </a>
+            <a
+              href="reminders.html"
+              class="text-gray-400 hover:text-gray-200 transition"
+            >
+              <i class="fas fa-bell mr-2"></i>Reminders
+            </a>
+            <div
+              class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-700 transition"
+            >
+              <i class="fas fa-user text-gray-400"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Motivational Header with Identity-Based Affirmation -->
+      <section class="mb-12">
+        <div
+          class="bg-gradient-to-br from-emerald-600 to-lime-600 rounded-2xl p-8 shadow-2xl relative overflow-hidden"
+        >
+          <!-- Decorative Background Pattern -->
+          <div class="absolute inset-0 opacity-10">
+            <div
+              class="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -mr-32 -mt-32"
+            ></div>
+            <div
+              class="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full -ml-24 -mb-24"
+            ></div>
+          </div>
+
+          <!-- Content -->
+          <div class="relative z-10">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-emerald-100 text-sm font-medium mb-2">
+                  Your Identity Statement
+                </p>
+                <h1 class="text-4xl font-bold text-white mb-3">
+                  I am an Investor
+                </h1>
+                <p class="text-emerald-50 text-lg">
+                  Building wealth through consistent daily actions
+                </p>
+              </div>
+              <div class="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+                <p class="text-white text-sm font-medium">Today</p>
+                <p class="text-white text-2xl font-bold">Day 14</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Grid Layout: Main Content + Sidebar -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Column: Today's Habits -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Today's Habits Section -->
+          <section>
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-2xl font-bold text-gray-100">Today's Habits</h2>
+              <span class="text-sm text-gray-400">3 of 5 completed</span>
+            </div>
+
+            <!-- Habits List -->
+            <div class="space-y-3">
+              <!-- Habit 1 - Completed -->
+              <div
+                class="bg-gray-900 border border-emerald-500/30 rounded-xl p-5 shadow-lg hover:shadow-emerald-500/10 transition"
+              >
+                <div class="flex items-start space-x-4">
+                  <!-- Checkbox -->
+                  <div class="flex-shrink-0 mt-1">
+                    <div
+                      class="w-6 h-6 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-md flex items-center justify-center cursor-pointer"
+                    >
+                      <i class="fas fa-check text-white text-sm"></i>
+                    </div>
+                  </div>
+
+                  <!-- Habit Details -->
+                  <div class="flex-1">
+                    <h3
+                      class="text-lg font-semibold text-gray-300 line-through"
+                    >
+                      Read 10 pages of finance book
+                    </h3>
+                    <p class="text-sm text-gray-500 mt-1">
+                      Small step toward financial literacy
+                    </p>
+
+                    <!-- Habit Stacking Tag -->
+                    <div class="flex items-center space-x-2 mt-3">
+                      <div
+                        class="bg-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full border border-blue-500/30"
+                      >
+                        <i class="fas fa-link mr-1"></i>
+                        Linked to: Morning Coffee
+                      </div>
+                      <span class="text-gray-600 text-xs">07:30 AM</span>
+                    </div>
+                  </div>
+
+                  <!-- Streak Badge -->
+                  <div class="flex-shrink-0">
+                    <div
+                      class="bg-emerald-500/20 rounded-lg px-3 py-2 text-center"
+                    >
+                      <i class="fas fa-fire text-emerald-400 text-lg"></i>
+                      <p class="text-emerald-400 text-sm font-bold mt-1">14</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Habit 2 - Completed -->
+              <div
+                class="bg-gray-900 border border-emerald-500/30 rounded-xl p-5 shadow-lg hover:shadow-emerald-500/10 transition"
+              >
+                <div class="flex items-start space-x-4">
+                  <div class="flex-shrink-0 mt-1">
+                    <div
+                      class="w-6 h-6 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-md flex items-center justify-center cursor-pointer"
+                    >
+                      <i class="fas fa-check text-white text-sm"></i>
+                    </div>
+                  </div>
+                  <div class="flex-1">
+                    <h3
+                      class="text-lg font-semibold text-gray-300 line-through"
+                    >
+                      Save $10 automatically
+                    </h3>
+                    <p class="text-sm text-gray-500 mt-1">
+                      Building my investment fund
+                    </p>
+                    <div class="flex items-center space-x-2 mt-3">
+                      <div
+                        class="bg-purple-500/20 text-purple-400 text-xs px-3 py-1 rounded-full border border-purple-500/30"
+                      >
+                        <i class="fas fa-link mr-1"></i>
+                        Linked to: Receive Paycheck
+                      </div>
+                      <span class="text-gray-600 text-xs">Monthly</span>
+                    </div>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div
+                      class="bg-emerald-500/20 rounded-lg px-3 py-2 text-center"
+                    >
+                      <i class="fas fa-fire text-emerald-400 text-lg"></i>
+                      <p class="text-emerald-400 text-sm font-bold mt-1">14</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Habit 3 - Completed -->
+              <div
+                class="bg-gray-900 border border-emerald-500/30 rounded-xl p-5 shadow-lg hover:shadow-emerald-500/10 transition"
+              >
+                <div class="flex items-start space-x-4">
+                  <div class="flex-shrink-0 mt-1">
+                    <div
+                      class="w-6 h-6 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-md flex items-center justify-center cursor-pointer"
+                    >
+                      <i class="fas fa-check text-white text-sm"></i>
+                    </div>
+                  </div>
+                  <div class="flex-1">
+                    <h3
+                      class="text-lg font-semibold text-gray-300 line-through"
+                    >
+                      Track daily expenses
+                    </h3>
+                    <p class="text-sm text-gray-500 mt-1">
+                      Awareness is the first step
+                    </p>
+                    <div class="flex items-center space-x-2 mt-3">
+                      <div
+                        class="bg-amber-500/20 text-amber-400 text-xs px-3 py-1 rounded-full border border-amber-500/30"
+                      >
+                        <i class="fas fa-link mr-1"></i>
+                        Linked to: Evening Wind-Down
+                      </div>
+                      <span class="text-gray-600 text-xs">09:00 PM</span>
+                    </div>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div
+                      class="bg-emerald-500/20 rounded-lg px-3 py-2 text-center"
+                    >
+                      <i class="fas fa-fire text-emerald-400 text-lg"></i>
+                      <p class="text-emerald-400 text-sm font-bold mt-1">12</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Habit 4 - Pending -->
+              <div
+                class="bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-lg hover:border-gray-700 transition"
+              >
+                <div class="flex items-start space-x-4">
+                  <div class="flex-shrink-0 mt-1">
+                    <div
+                      class="w-6 h-6 bg-gray-800 border-2 border-gray-700 rounded-md cursor-pointer hover:border-gray-600 transition"
+                    ></div>
+                  </div>
+                  <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-gray-100">
+                      Review investment portfolio
+                    </h3>
+                    <p class="text-sm text-gray-500 mt-1">
+                      Stay informed about my assets
+                    </p>
+                    <div class="flex items-center space-x-2 mt-3">
+                      <div
+                        class="bg-indigo-500/20 text-indigo-400 text-xs px-3 py-1 rounded-full border border-indigo-500/30"
+                      >
+                        <i class="fas fa-link mr-1"></i>
+                        Linked to: Lunch Break
+                      </div>
+                      <span class="text-gray-600 text-xs">12:30 PM</span>
+                    </div>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div class="bg-gray-800 rounded-lg px-3 py-2 text-center">
+                      <i class="fas fa-fire text-gray-600 text-lg"></i>
+                      <p class="text-gray-600 text-sm font-bold mt-1">8</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Habit 5 - Pending -->
+              <div
+                class="bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-lg hover:border-gray-700 transition"
+              >
+                <div class="flex items-start space-x-4">
+                  <div class="flex-shrink-0 mt-1">
+                    <div
+                      class="w-6 h-6 bg-gray-800 border-2 border-gray-700 rounded-md cursor-pointer hover:border-gray-600 transition"
+                    ></div>
+                  </div>
+                  <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-gray-100">
+                      Learn one new investing concept
+                    </h3>
+                    <p class="text-sm text-gray-500 mt-1">
+                      Compound knowledge over time
+                    </p>
+                    <div class="flex items-center space-x-2 mt-3">
+                      <div
+                        class="bg-rose-500/20 text-rose-400 text-xs px-3 py-1 rounded-full border border-rose-500/30"
+                      >
+                        <i class="fas fa-link mr-1"></i>
+                        Linked to: Commute Home
+                      </div>
+                      <span class="text-gray-600 text-xs">06:00 PM</span>
+                    </div>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div class="bg-gray-800 rounded-lg px-3 py-2 text-center">
+                      <i class="fas fa-fire text-gray-600 text-lg"></i>
+                      <p class="text-gray-600 text-sm font-bold mt-1">9</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Quick Add Button -->
+          <div class="flex justify-center pt-4">
+            <a
+              href="add-habit.html"
+              class="bg-gradient-to-r from-emerald-500 to-lime-500 hover:from-emerald-600 hover:to-lime-600 text-white font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-emerald-500/30 transition inline-flex items-center space-x-2"
+            >
+              <i class="fas fa-plus-circle"></i>
+              <span>Create New Habit</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Sidebar: Progress & Social -->
+        <div class="space-y-6">
+          <!-- 21-Day Streak Tracker -->
+          <section
+            class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-lg"
+          >
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-gray-100">21-Day Challenge</h3>
+              <span class="text-emerald-400 text-sm font-semibold"
+                >14/21 Days</span
+              >
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="mb-6">
+              <div class="bg-gray-800 rounded-full h-3 overflow-hidden">
+                <div
+                  class="bg-gradient-to-r from-emerald-500 to-lime-500 h-full rounded-full"
+                  style="width: 66.7%"
+                ></div>
+              </div>
+              <p class="text-gray-400 text-xs mt-2">
+                7 days until milestone! 🎯
+              </p>
+            </div>
+
+            <!-- Mini Calendar - Visual Streak Tracker -->
+            <div class="grid grid-cols-7 gap-2">
+              <!-- Week 1 -->
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                1
+              </div>
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                2
+              </div>
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                3
+              </div>
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                4
+              </div>
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                5
+              </div>
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                6
+              </div>
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                7
+              </div>
+
+              <!-- Week 2 -->
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                8
+              </div>
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                9
+              </div>
+              <div
+                class="aspect-square bg-amber-500/40 rounded-lg flex items-center justify-center text-amber-300 text-xs font-bold relative"
+              >
+                <span>10</span>
+                <i
+                  class="fas fa-exclamation text-xs absolute -top-1 -right-1"
+                ></i>
+              </div>
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                11
+              </div>
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                12
+              </div>
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                13
+              </div>
+              <div
+                class="aspect-square bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              >
+                14
+              </div>
+
+              <!-- Week 3 -->
+              <div
+                class="aspect-square bg-gray-800 border-2 border-dashed border-gray-700 rounded-lg flex items-center justify-center text-gray-600 text-xs"
+              >
+                15
+              </div>
+              <div
+                class="aspect-square bg-gray-800 border-2 border-dashed border-gray-700 rounded-lg flex items-center justify-center text-gray-600 text-xs"
+              >
+                16
+              </div>
+              <div
+                class="aspect-square bg-gray-800 border-2 border-dashed border-gray-700 rounded-lg flex items-center justify-center text-gray-600 text-xs"
+              >
+                17
+              </div>
+              <div
+                class="aspect-square bg-gray-800 border-2 border-dashed border-gray-700 rounded-lg flex items-center justify-center text-gray-600 text-xs"
+              >
+                18
+              </div>
+              <div
+                class="aspect-square bg-gray-800 border-2 border-dashed border-gray-700 rounded-lg flex items-center justify-center text-gray-600 text-xs"
+              >
+                19
+              </div>
+              <div
+                class="aspect-square bg-gray-800 border-2 border-dashed border-gray-700 rounded-lg flex items-center justify-center text-gray-600 text-xs"
+              >
+                20
+              </div>
+              <div
+                class="aspect-square bg-gray-800 border-2 border-dashed border-gray-700 rounded-lg flex items-center justify-center text-gray-600 text-xs"
+              >
+                21
+              </div>
+            </div>
+
+            <!-- Forgiving Message for Missed Day -->
+            <div
+              class="mt-4 bg-amber-500/10 border border-amber-500/30 rounded-lg p-3"
+            >
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-heart text-amber-400 text-sm mt-1"></i>
+                <div>
+                  <p class="text-amber-300 text-xs font-semibold">
+                    Day 10: Resilience Boost
+                  </p>
+                  <p class="text-gray-400 text-xs mt-1">
+                    You missed a day, but got right back on track. That's what
+                    resilience looks like! 💪
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Accountability Buddy Widget -->
+          <section
+            class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-lg"
+          >
+            <div class="flex items-center space-x-3 mb-4">
+              <i class="fas fa-user-friends text-emerald-400 text-xl"></i>
+              <h3 class="text-lg font-bold text-gray-100">
+                Accountability Buddy
+              </h3>
+            </div>
+
+            <!-- Buddy Profile -->
+            <div class="flex items-center space-x-3 mb-4">
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg"
+              >
+                SM
+              </div>
+              <div>
+                <p class="text-gray-100 font-semibold">Sarah M.</p>
+                <p class="text-gray-500 text-xs">Your study buddy</p>
+              </div>
+            </div>
+
+            <!-- Buddy's Progress (Non-competitive) -->
+            <div class="bg-gray-800 rounded-lg p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-gray-400 text-sm">Sarah's Progress</span>
+                <span class="text-emerald-400 text-sm font-semibold"
+                  >Day 16/21</span
+                >
+              </div>
+              <div class="bg-gray-700 rounded-full h-2 overflow-hidden">
+                <div
+                  class="bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full"
+                  style="width: 76%"
+                ></div>
+              </div>
+              <p class="text-gray-500 text-xs mt-3">
+                <i class="fas fa-check-circle text-emerald-400 mr-1"></i>
+                Completed 4/4 habits today
+              </p>
+            </div>
+
+            <!-- Mutual Support Message -->
+            <div
+              class="mt-4 bg-blue-500/10 border border-blue-500/30 rounded-lg p-3"
+            >
+              <p class="text-blue-300 text-xs">
+                <i class="fas fa-comment-dots mr-1"></i>
+                "Keep going! We're both crushing it! 🚀"
+              </p>
+            </div>
+
+            <!-- Send Encouragement Button -->
+            <button
+              class="w-full mt-4 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium py-2 rounded-lg transition text-sm"
+            >
+              <i class="fas fa-paper-plane mr-2"></i>
+              Send Encouragement
+            </button>
+          </section>
+
+          <!-- Motivational Quote -->
+          <section
+            class="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-800 rounded-xl p-6 shadow-lg"
+          >
+            <i class="fas fa-quote-left text-emerald-400 text-2xl mb-3"></i>
+            <p class="text-gray-300 text-sm italic mb-3">
+              "You don't have to be great to start, but you have to start to be
+              great."
+            </p>
+            <p class="text-gray-500 text-xs">— Zig Ziglar</p>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 mt-16 py-8">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p class="text-gray-500 text-sm">
+          HabitForge - Building resilient habits, one day at a time
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

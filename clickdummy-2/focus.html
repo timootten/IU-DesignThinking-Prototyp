@@ -1,0 +1,905 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Focus Mode - Habit Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @keyframes pulse-ring {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.5);
+          opacity: 0;
+        }
+      }
+      .pulse-ring {
+        animation: pulse-ring 2s ease-out infinite;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <!-- Theme Toggle -->
+    <div class="fixed top-4 right-4 z-50">
+      <button
+        id="themeToggle"
+        class="p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all"
+      >
+        <i class="fas fa-moon dark:hidden text-gray-700"></i>
+        <i class="fas fa-sun hidden dark:inline text-yellow-400"></i>
+      </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto p-6 pb-24">
+      <!-- Header -->
+      <header class="mb-8 mt-12">
+        <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-2">
+          Focus Mode ⏰
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Deep work sessions for maximum productivity
+        </p>
+      </header>
+
+      <!-- Focus Timer Card -->
+      <div
+        class="bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 rounded-3xl p-8 mb-8 shadow-2xl relative overflow-hidden"
+      >
+        <!-- Pulse rings for active timer -->
+        <div
+          id="pulseRings"
+          class="hidden absolute inset-0 flex items-center justify-center pointer-events-none"
+        >
+          <div
+            class="absolute w-64 h-64 rounded-full border-4 border-white/30 pulse-ring"
+          ></div>
+          <div
+            class="absolute w-64 h-64 rounded-full border-4 border-white/30 pulse-ring"
+            style="animation-delay: 1s"
+          ></div>
+        </div>
+
+        <div class="text-center relative z-10">
+          <h2
+            class="text-xl font-bold text-white/90 mb-6 uppercase tracking-wide"
+          >
+            Focus Timer
+          </h2>
+
+          <!-- Timer Display -->
+          <div class="mb-8">
+            <div
+              id="timerDisplay"
+              class="text-7xl font-bold text-white mb-3 font-mono"
+            >
+              25:00
+            </div>
+            <div id="timerLabel" class="text-white/80 text-lg">
+              Ready to focus?
+            </div>
+          </div>
+
+          <!-- Timer Controls -->
+          <div class="flex justify-center gap-4 mb-6">
+            <button
+              id="startBtn"
+              class="bg-white text-purple-600 px-8 py-3 rounded-full font-bold text-lg hover:bg-purple-50 transition-all shadow-lg hover:scale-105"
+            >
+              <i class="fas fa-play mr-2"></i>Start
+            </button>
+            <button
+              id="pauseBtn"
+              class="hidden bg-white/20 backdrop-blur text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-white/30 transition-all"
+            >
+              <i class="fas fa-pause mr-2"></i>Pause
+            </button>
+            <button
+              id="resetBtn"
+              class="bg-white/20 backdrop-blur text-white px-6 py-3 rounded-full font-bold hover:bg-white/30 transition-all"
+            >
+              <i class="fas fa-redo"></i>
+            </button>
+          </div>
+
+          <!-- Timer Presets -->
+          <div class="flex justify-center gap-3">
+            <button
+              onclick="setTimer(15)"
+              class="bg-white/20 backdrop-blur text-white px-4 py-2 rounded-full text-sm hover:bg-white/30 transition-all"
+            >
+              15 min
+            </button>
+            <button
+              onclick="setTimer(25)"
+              class="bg-white/20 backdrop-blur text-white px-4 py-2 rounded-full text-sm hover:bg-white/30 transition-all"
+            >
+              25 min
+            </button>
+            <button
+              onclick="setTimer(45)"
+              class="bg-white/20 backdrop-blur text-white px-4 py-2 rounded-full text-sm hover:bg-white/30 transition-all"
+            >
+              45 min
+            </button>
+            <button
+              onclick="setTimer(60)"
+              class="bg-white/20 backdrop-blur text-white px-4 py-2 rounded-full text-sm hover:bg-white/30 transition-all"
+            >
+              60 min
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Focus Stats -->
+      <div class="grid grid-cols-3 gap-4 mb-8">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md text-center"
+        >
+          <div class="text-3xl mb-2">⏱️</div>
+          <div
+            id="todaySessions"
+            class="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-1"
+          >
+            0
+          </div>
+          <div class="text-xs text-gray-600 dark:text-gray-400">
+            Sessions Today
+          </div>
+        </div>
+        <div
+          class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md text-center"
+        >
+          <div class="text-3xl mb-2">🎯</div>
+          <div
+            id="totalMinutes"
+            class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-1"
+          >
+            0
+          </div>
+          <div class="text-xs text-gray-600 dark:text-gray-400">
+            Minutes Today
+          </div>
+        </div>
+        <div
+          class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md text-center"
+        >
+          <div class="text-3xl mb-2">🏆</div>
+          <div
+            id="weekStreak"
+            class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-1"
+          >
+            0
+          </div>
+          <div class="text-xs text-gray-600 dark:text-gray-400">
+            Week Streak
+          </div>
+        </div>
+      </div>
+
+      <!-- Schedule Section -->
+      <div class="mb-8">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+            Auto-Schedule
+          </h2>
+          <button
+            id="addScheduleBtn"
+            class="btn-primary text-white px-4 py-2 rounded-full text-sm font-medium transition-colors shadow-lg"
+          >
+            <i class="fas fa-plus mr-2"></i>Add Time Block
+          </button>
+        </div>
+
+        <!-- Schedule Form (Hidden by default) -->
+        <div
+          id="scheduleForm"
+          class="hidden bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md mb-4"
+        >
+          <h3 class="font-bold text-gray-800 dark:text-white mb-4">
+            Create Focus Time Block
+          </h3>
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm text-gray-600 dark:text-gray-400 mb-2"
+                >Start Time</label
+              >
+              <input
+                type="time"
+                id="scheduleStart"
+                class="w-full border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 rounded-xl px-4 py-2 text-gray-800 dark:text-white focus:outline-none focus:border-purple-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm text-gray-600 dark:text-gray-400 mb-2"
+                >Duration</label
+              >
+              <select
+                id="scheduleDuration"
+                class="w-full border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 rounded-xl px-4 py-2 text-gray-800 dark:text-white focus:outline-none focus:border-purple-500"
+              >
+                <option value="15">15 minutes</option>
+                <option value="25" selected>25 minutes</option>
+                <option value="45">45 minutes</option>
+                <option value="60">60 minutes</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm text-gray-600 dark:text-gray-400 mb-2"
+              >Repeat</label
+            >
+            <div class="flex gap-2 flex-wrap">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  value="Mon"
+                  class="schedule-day rounded"
+                />
+                <span class="text-sm text-gray-700 dark:text-gray-300"
+                  >Mon</span
+                >
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  value="Tue"
+                  class="schedule-day rounded"
+                />
+                <span class="text-sm text-gray-700 dark:text-gray-300"
+                  >Tue</span
+                >
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  value="Wed"
+                  class="schedule-day rounded"
+                />
+                <span class="text-sm text-gray-700 dark:text-gray-300"
+                  >Wed</span
+                >
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  value="Thu"
+                  class="schedule-day rounded"
+                />
+                <span class="text-sm text-gray-700 dark:text-gray-300"
+                  >Thu</span
+                >
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  value="Fri"
+                  class="schedule-day rounded"
+                />
+                <span class="text-sm text-gray-700 dark:text-gray-300"
+                  >Fri</span
+                >
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  value="Sat"
+                  class="schedule-day rounded"
+                />
+                <span class="text-sm text-gray-700 dark:text-gray-300"
+                  >Sat</span
+                >
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  value="Sun"
+                  class="schedule-day rounded"
+                />
+                <span class="text-sm text-gray-700 dark:text-gray-300"
+                  >Sun</span
+                >
+              </label>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <button
+              id="saveScheduleBtn"
+              class="flex-grow btn-primary text-white px-6 py-2 rounded-xl font-semibold transition-colors"
+            >
+              Save
+            </button>
+            <button
+              id="cancelScheduleBtn"
+              class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-6 py-2 rounded-xl font-semibold transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        <!-- Scheduled Blocks List -->
+        <div id="scheduledBlocks" class="space-y-3">
+          <!-- Blocks will be inserted here -->
+        </div>
+
+        <div
+          id="noSchedule"
+          class="text-center py-8 text-gray-600 dark:text-gray-400"
+        >
+          <div class="text-4xl mb-3">📅</div>
+          <p>No scheduled focus times yet</p>
+        </div>
+      </div>
+
+      <!-- Reminders Section -->
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">
+          Active Reminders
+        </h2>
+
+        <div class="space-y-3">
+          <!-- Reminder 1 -->
+          <div
+            class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md flex items-center gap-4"
+          >
+            <div class="text-3xl">☀️</div>
+            <div class="flex-grow">
+              <h3 class="font-semibold text-gray-800 dark:text-white">
+                Morning Workout
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Every day at 7:00 AM
+              </p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" checked class="sr-only peer" />
+              <div
+                class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"
+              ></div>
+            </label>
+          </div>
+
+          <!-- Reminder 2 -->
+          <div
+            class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md flex items-center gap-4"
+          >
+            <div class="text-3xl">📚</div>
+            <div class="flex-grow">
+              <h3 class="font-semibold text-gray-800 dark:text-white">
+                Reading Time
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Weekdays at 8:00 PM
+              </p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" checked class="sr-only peer" />
+              <div
+                class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"
+              ></div>
+            </label>
+          </div>
+
+          <!-- Reminder 3 -->
+          <div
+            class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md flex items-center gap-4"
+          >
+            <div class="text-3xl">🧘</div>
+            <div class="flex-grow">
+              <h3 class="font-semibold text-gray-800 dark:text-white">
+                Meditation
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Every day at 6:30 AM
+              </p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" checked class="sr-only peer" />
+              <div
+                class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"
+              ></div>
+            </label>
+          </div>
+
+          <!-- Reminder 4 -->
+          <div
+            class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md flex items-center gap-4"
+          >
+            <div class="text-3xl">💧</div>
+            <div class="flex-grow">
+              <h3 class="font-semibold text-gray-800 dark:text-white">
+                Hydration Check
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Every 2 hours
+              </p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" class="sr-only peer" />
+              <div
+                class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"
+              ></div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tips Card -->
+      <div
+        class="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl p-6 shadow-xl"
+      >
+        <div class="flex items-start gap-4">
+          <div class="text-4xl">💡</div>
+          <div>
+            <h3 class="text-lg font-bold text-white mb-2">Pro Tip</h3>
+            <p class="text-white/90 text-sm leading-relaxed">
+              Research shows that 25-minute focus sessions (Pomodoro technique)
+              followed by 5-minute breaks maximize productivity while preventing
+              burnout. Try scheduling 2-3 sessions per day!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav
+      class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-2xl"
+    >
+      <div class="max-w-4xl mx-auto px-6 py-3">
+        <div class="flex justify-around items-center">
+          <a
+            href="index.html"
+            class="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+          >
+            <i class="fas fa-home text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Home</span>
+          </a>
+          <a
+            href="add-edit.html"
+            class="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+          >
+            <i class="fas fa-plus-circle text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Add</span>
+          </a>
+          <a
+            href="focus.html"
+            class="flex flex-col items-center text-purple-500"
+          >
+            <i class="fas fa-clock text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Focus</span>
+          </a>
+          <a
+            href="accountability.html"
+            class="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+          >
+            <i class="fas fa-users text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Buddy</span>
+          </a>
+          <a
+            href="profile.html"
+            class="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+          >
+            <i class="fas fa-user-circle text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Profile</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <script>
+      // ==================== SHARED CONFIGURATION ====================
+
+      function getUserProfile() {
+        const profile = localStorage.getItem("userProfile");
+        return profile
+          ? JSON.parse(profile)
+          : {
+              name: "",
+              email: "",
+              avatar: "👤",
+              theme: "light",
+              accentColor: "purple",
+              notifications: true,
+              weekStart: "monday",
+              language: "en",
+            };
+      }
+
+      function saveUserProfile(profile) {
+        localStorage.setItem("userProfile", JSON.stringify(profile));
+        applyThemeAndColors();
+      }
+
+      const colorSchemes = {
+        purple: {
+          primary: "#8b5cf6",
+          primaryHover: "#7c3aed",
+          primaryLight: "#ede9fe",
+          primaryDark: "#6d28d9",
+        },
+        blue: {
+          primary: "#3b82f6",
+          primaryHover: "#2563eb",
+          primaryLight: "#dbeafe",
+          primaryDark: "#1e40af",
+        },
+        green: {
+          primary: "#10b981",
+          primaryHover: "#059669",
+          primaryLight: "#d1fae5",
+          primaryDark: "#047857",
+        },
+        pink: {
+          primary: "#ec4899",
+          primaryHover: "#db2777",
+          primaryLight: "#fce7f3",
+          primaryDark: "#be185d",
+        },
+        orange: {
+          primary: "#f97316",
+          primaryHover: "#ea580c",
+          primaryLight: "#ffedd5",
+          primaryDark: "#c2410c",
+        },
+        indigo: {
+          primary: "#6366f1",
+          primaryHover: "#4f46e5",
+          primaryLight: "#e0e7ff",
+          primaryDark: "#4338ca",
+        },
+      };
+
+      function initTheme() {
+        const profile = getUserProfile();
+        if (profile.theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+        updateThemeToggleIcon();
+        applyAccentColor(profile.accentColor);
+      }
+
+      function toggleTheme() {
+        const profile = getUserProfile();
+        profile.theme = profile.theme === "dark" ? "light" : "dark";
+        saveUserProfile(profile);
+      }
+
+      function updateThemeToggleIcon() {
+        const profile = getUserProfile();
+        const isDark = profile.theme === "dark";
+        const moonIcon = document.querySelector("#themeToggle .fa-moon");
+        const sunIcon = document.querySelector("#themeToggle .fa-sun");
+        if (moonIcon && sunIcon) {
+          if (isDark) {
+            moonIcon.classList.add("hidden");
+            sunIcon.classList.remove("hidden");
+          } else {
+            moonIcon.classList.remove("hidden");
+            sunIcon.classList.add("hidden");
+          }
+        }
+      }
+
+      function applyAccentColor(color) {
+        const scheme = colorSchemes[color] || colorSchemes.purple;
+        const root = document.documentElement;
+        root.style.setProperty("--color-primary", scheme.primary);
+        root.style.setProperty("--color-primary-hover", scheme.primaryHover);
+        root.style.setProperty("--color-primary-light", scheme.primaryLight);
+        root.style.setProperty("--color-primary-dark", scheme.primaryDark);
+        document.documentElement.setAttribute("data-accent-color", color);
+        injectDynamicStyles(color, scheme);
+      }
+
+      function injectDynamicStyles(color, scheme) {
+        const existingStyle = document.getElementById("dynamic-accent-styles");
+        if (existingStyle) existingStyle.remove();
+
+        const style = document.createElement("style");
+        style.id = "dynamic-accent-styles";
+        style.textContent = `
+          .btn-primary { background-color: ${scheme.primary} !important; }
+          .btn-primary:hover { background-color: ${scheme.primaryHover} !important; }
+          .text-primary { color: ${scheme.primary} !important; }
+          nav a.text-purple-500, nav a.text-blue-500, nav a.text-green-500,
+          nav a.text-pink-500, nav a.text-orange-500, nav a.text-indigo-500 { color: ${scheme.primary} !important; }
+          .hover\\:text-purple-500:hover, .hover\\:text-purple-600:hover { color: ${scheme.primary} !important; }
+          .text-purple-500, .text-purple-600 { color: ${scheme.primary} !important; }
+          .border-purple-500, .peer-checked\\:border-purple-500:checked { border-color: ${scheme.primary} !important; }
+          .hover\\:border-purple-500:hover, .hover\\:border-purple-300:hover { border-color: ${scheme.primary} !important; }
+          .ring-purple-500 { --tw-ring-color: ${scheme.primary} !important; }
+          .hover\\:bg-purple-100:hover { background-color: ${scheme.primaryLight} !important; }
+          .bg-purple-50, .peer:checked ~ .peer-checked\\:bg-purple-50 { background-color: ${scheme.primaryLight} !important; }
+          .dark .peer:checked ~ .dark\\:peer-checked\\:bg-purple-900\\/20 { background-color: ${scheme.primaryDark}33 !important; }
+          .dark .dark\\:text-purple-400 { color: ${scheme.primaryLight} !important; }
+          .accent-gradient { background: linear-gradient(to right, ${scheme.primary}, ${scheme.primaryHover}) !important; }
+        `;
+        document.head.appendChild(style);
+      }
+
+      function applyLanguage() {
+        const lang = getUserProfile().language || "en";
+        const navTexts = {
+          en: ["Home", "Add", "Focus", "Buddy", "Profile"],
+          de: ["Start", "Neu", "Fokus", "Buddy", "Profil"],
+          es: ["Inicio", "Añadir", "Enfoque", "Compañero", "Perfil"],
+          fr: ["Accueil", "Ajouter", "Focus", "Partenaire", "Profil"],
+        };
+        const labels = document.querySelectorAll("nav a span");
+        const texts = navTexts[lang] || navTexts.en;
+        labels.forEach((l, i) => {
+          if (texts[i]) l.textContent = texts[i];
+        });
+      }
+
+      function applyThemeAndColors() {
+        initTheme();
+        applyLanguage();
+      }
+
+      function setupThemeToggle() {
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          themeToggle.addEventListener("click", toggleTheme);
+        }
+      }
+
+      // Auto-initialize
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+          initTheme();
+          setupThemeToggle();
+        });
+      } else {
+        initTheme();
+        setupThemeToggle();
+      }
+
+      // ==================== THEME MANAGEMENT ====================
+      // Theme management is handled by shared-config.js
+
+      // ==================== TIMER MANAGEMENT ====================
+
+      let timerInterval = null;
+      let timeRemaining = 25 * 60; // 25 minutes in seconds
+      let isRunning = false;
+
+      function updateTimerDisplay() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        document.getElementById("timerDisplay").textContent =
+          `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      }
+
+      function setTimer(minutes) {
+        if (isRunning) return;
+        timeRemaining = minutes * 60;
+        updateTimerDisplay();
+      }
+
+      function startTimer() {
+        if (isRunning) return;
+
+        isRunning = true;
+        document.getElementById("startBtn").classList.add("hidden");
+        document.getElementById("pauseBtn").classList.remove("hidden");
+        document.getElementById("timerLabel").textContent =
+          "Focus mode active 🎯";
+        document.getElementById("pulseRings").classList.remove("hidden");
+
+        timerInterval = setInterval(() => {
+          if (timeRemaining > 0) {
+            timeRemaining--;
+            updateTimerDisplay();
+          } else {
+            completeTimer();
+          }
+        }, 1000);
+      }
+
+      function pauseTimer() {
+        isRunning = false;
+        clearInterval(timerInterval);
+        document.getElementById("startBtn").classList.remove("hidden");
+        document.getElementById("pauseBtn").classList.add("hidden");
+        document.getElementById("timerLabel").textContent = "Paused";
+        document.getElementById("pulseRings").classList.add("hidden");
+      }
+
+      function resetTimer() {
+        pauseTimer();
+        timeRemaining = 25 * 60;
+        updateTimerDisplay();
+        document.getElementById("timerLabel").textContent = "Ready to focus?";
+      }
+
+      function completeTimer() {
+        pauseTimer();
+        document.getElementById("timerLabel").textContent = "Great work! 🎉";
+
+        // Update stats
+        const stats = getFocusStats();
+        stats.todaySessions++;
+        const sessionMinutes = 25; // Default session length
+        stats.totalMinutes += sessionMinutes;
+        stats.lastSessionDate = new Date().toDateString();
+        saveFocusStats(stats);
+        updateStatsDisplay();
+
+        // Play sound (browser notification)
+        if (Notification.permission === "granted") {
+          new Notification("Focus Session Complete!", {
+            body: "Great job! Time for a break 🎉",
+            icon: "⏰",
+          });
+        }
+
+        // Reset for next session
+        setTimeout(() => {
+          resetTimer();
+        }, 3000);
+      }
+
+      document.getElementById("startBtn").addEventListener("click", startTimer);
+      document.getElementById("pauseBtn").addEventListener("click", pauseTimer);
+      document.getElementById("resetBtn").addEventListener("click", resetTimer);
+
+      // Request notification permission
+      if (Notification.permission === "default") {
+        Notification.requestPermission();
+      }
+
+      // ==================== STATS MANAGEMENT ====================
+
+      function getFocusStats() {
+        const stats = localStorage.getItem("focusStats");
+        return stats
+          ? JSON.parse(stats)
+          : {
+              todaySessions: 0,
+              totalMinutes: 0,
+              weekStreak: 0,
+              lastSessionDate: null,
+            };
+      }
+
+      function saveFocusStats(stats) {
+        localStorage.setItem("focusStats", JSON.stringify(stats));
+      }
+
+      function updateStatsDisplay() {
+        const stats = getFocusStats();
+
+        // Reset if it's a new day
+        const today = new Date().toDateString();
+        if (stats.lastSessionDate !== today) {
+          stats.todaySessions = 0;
+          stats.totalMinutes = 0;
+        }
+
+        document.getElementById("todaySessions").textContent =
+          stats.todaySessions;
+        document.getElementById("totalMinutes").textContent =
+          stats.totalMinutes;
+        document.getElementById("weekStreak").textContent = stats.weekStreak;
+      }
+
+      // ==================== SCHEDULE MANAGEMENT ====================
+
+      function getScheduledBlocks() {
+        const blocks = localStorage.getItem("scheduledBlocks");
+        return blocks ? JSON.parse(blocks) : [];
+      }
+
+      function saveScheduledBlocks(blocks) {
+        localStorage.setItem("scheduledBlocks", JSON.stringify(blocks));
+      }
+
+      function renderScheduledBlocks() {
+        const blocks = getScheduledBlocks();
+        const container = document.getElementById("scheduledBlocks");
+        const noSchedule = document.getElementById("noSchedule");
+
+        if (blocks.length === 0) {
+          container.innerHTML = "";
+          noSchedule.classList.remove("hidden");
+          return;
+        }
+
+        noSchedule.classList.add("hidden");
+
+        container.innerHTML = blocks
+          .map(
+            (block, index) => `
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md">
+                    <div class="flex items-center gap-4">
+                        <div class="text-3xl">🕐</div>
+                        <div class="flex-grow">
+                            <h3 class="font-semibold text-gray-800 dark:text-white">
+                                ${block.start} - ${block.duration} min focus
+                            </h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                ${block.days.join(", ")}
+                            </p>
+                        </div>
+                        <button onclick="deleteScheduleBlock(${index})" class="text-gray-400 hover:text-red-500 transition-colors">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      function deleteScheduleBlock(index) {
+        const blocks = getScheduledBlocks();
+        blocks.splice(index, 1);
+        saveScheduledBlocks(blocks);
+        renderScheduledBlocks();
+      }
+
+      document
+        .getElementById("addScheduleBtn")
+        .addEventListener("click", () => {
+          document.getElementById("scheduleForm").classList.remove("hidden");
+        });
+
+      document
+        .getElementById("cancelScheduleBtn")
+        .addEventListener("click", () => {
+          document.getElementById("scheduleForm").classList.add("hidden");
+        });
+
+      document
+        .getElementById("saveScheduleBtn")
+        .addEventListener("click", () => {
+          const start = document.getElementById("scheduleStart").value;
+          const duration = document.getElementById("scheduleDuration").value;
+          const days = Array.from(
+            document.querySelectorAll(".schedule-day:checked"),
+          ).map((cb) => cb.value);
+
+          if (!start || days.length === 0) {
+            alert("Please select a time and at least one day");
+            return;
+          }
+
+          const blocks = getScheduledBlocks();
+          blocks.push({ start, duration, days });
+          saveScheduledBlocks(blocks);
+
+          // Reset form
+          document.getElementById("scheduleStart").value = "";
+          document
+            .querySelectorAll(".schedule-day")
+            .forEach((cb) => (cb.checked = false));
+          document.getElementById("scheduleForm").classList.add("hidden");
+
+          renderScheduledBlocks();
+        });
+
+      // ==================== INITIALIZATION ====================
+
+      initTheme();
+      updateTimerDisplay();
+      updateStatsDisplay();
+      renderScheduledBlocks();
+    </script>
+  </body>
+</html>

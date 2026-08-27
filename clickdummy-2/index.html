@@ -1,0 +1,1126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Habit Tracker - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @keyframes confetti {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+      .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        animation: confetti 1s ease-out forwards;
+        pointer-events: none;
+      }
+      .tree-growth {
+        transition: all 0.5s ease;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <!-- Theme Toggle -->
+    <div class="fixed top-4 right-4 z-50">
+      <button
+        id="themeToggle"
+        class="p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all"
+      >
+        <i class="fas fa-moon dark:hidden text-gray-700"></i>
+        <i class="fas fa-sun hidden dark:inline text-yellow-400"></i>
+      </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto p-6 pb-24">
+      <!-- Header -->
+      <header class="mb-8 mt-12">
+        <div class="flex items-center justify-between mb-4">
+          <h1 class="text-4xl font-bold text-gray-800 dark:text-white">
+            <span id="welcomeMessage">Welcome back!</span> 🌟
+          </h1>
+          <a
+            href="profile.html"
+            class="text-5xl hover:scale-110 transition-transform"
+            id="userAvatar"
+            >👤</a
+          >
+        </div>
+        <p class="text-gray-600 dark:text-gray-400">
+          Let's build great habits today
+        </p>
+      </header>
+
+      <!-- Daily Quote Card -->
+      <div id="dailyMotivationCard" class="rounded-3xl p-6 mb-8 shadow-xl">
+        <div class="flex justify-between items-start mb-3">
+          <h2
+            class="text-sm font-semibold text-white/80 uppercase tracking-wide"
+          >
+            Daily Motivation
+          </h2>
+          <button
+            id="favoriteQuote"
+            class="text-2xl transition-transform hover:scale-125"
+          >
+            <i class="far fa-heart text-white"></i>
+          </button>
+        </div>
+        <p
+          id="dailyQuote"
+          class="text-xl text-white font-medium mb-2 leading-relaxed"
+        ></p>
+        <p id="quoteAuthor" class="text-white/80 text-sm"></p>
+      </div>
+
+      <!-- Stats Overview -->
+      <div class="grid grid-cols-3 gap-4 mb-8">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md">
+          <div class="text-3xl mb-2">🔥</div>
+          <div
+            id="currentStreak"
+            class="text-2xl font-bold text-yellow-500 mb-1"
+          >
+            0
+          </div>
+          <div class="text-xs text-gray-600 dark:text-gray-400">Day Streak</div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md">
+          <div class="text-3xl mb-2">⭐</div>
+          <div
+            id="totalPoints"
+            class="text-2xl font-bold text-emerald-500 mb-1"
+          >
+            0
+          </div>
+          <div class="text-xs text-gray-600 dark:text-gray-400">
+            Total Points
+          </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md">
+          <div class="text-3xl mb-2">🌱</div>
+          <div
+            id="completionRate"
+            class="text-2xl font-bold text-blue-500 mb-1"
+          >
+            0%
+          </div>
+          <div class="text-xs text-gray-600 dark:text-gray-400">Completion</div>
+        </div>
+      </div>
+
+      <!-- Tree Visualization -->
+      <div
+        class="bg-white dark:bg-gray-800 rounded-3xl p-6 mb-8 shadow-md text-center"
+      >
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+          Your Growth Tree
+        </h3>
+        <div id="treeContainer" class="text-8xl tree-growth">🌱</div>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mt-4">
+          Complete habits to grow your tree!
+        </p>
+      </div>
+
+      <!-- 21-Day Challenge -->
+      <div
+        id="challengeCard"
+        class="bg-white dark:bg-gray-800 rounded-3xl p-6 mb-8 shadow-md"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-800 dark:text-white">
+            🎯 21-Day Challenge
+          </h3>
+          <span
+            id="challengeProgress"
+            class="text-sm font-bold text-purple-500"
+          >
+            0/21 Days
+          </span>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="mb-4">
+          <div
+            class="bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden"
+          >
+            <div
+              id="challengeProgressBar"
+              class="accent-gradient h-full rounded-full transition-all duration-500"
+              style="width: 0%"
+            ></div>
+          </div>
+          <p
+            id="challengeMessage"
+            class="text-gray-500 dark:text-gray-400 text-xs mt-2"
+          >
+            Start completing habits to begin your challenge!
+          </p>
+        </div>
+
+        <!-- 21-Day Grid -->
+        <div id="challengeGrid" class="grid grid-cols-7 gap-2">
+          <!-- Days will be generated by JavaScript -->
+        </div>
+
+        <!-- Resilience Message (shown when a day was missed) -->
+        <div
+          id="resilienceMessage"
+          class="hidden mt-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl p-3"
+        >
+          <div class="flex items-start space-x-2">
+            <span class="text-sm mt-0.5">💪</span>
+            <div>
+              <p
+                class="text-amber-700 dark:text-amber-300 text-xs font-semibold"
+              >
+                Resilience Boost
+              </p>
+              <p
+                id="resilienceText"
+                class="text-amber-600 dark:text-amber-400 text-xs mt-1"
+              >
+                You missed a day, but got right back on track. That's what
+                resilience looks like!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Today's Habits -->
+      <div class="mb-8">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+            Today's Habits
+          </h2>
+          <a
+            href="add-edit.html"
+            class="btn-primary text-white px-4 py-2 rounded-full text-sm font-medium transition-colors shadow-lg"
+          >
+            <i class="fas fa-plus mr-2"></i>Add Habit
+          </a>
+        </div>
+
+        <div id="habitsList" class="space-y-4">
+          <!-- Habits will be dynamically inserted here -->
+        </div>
+
+        <div id="emptyState" class="hidden text-center py-12">
+          <div class="text-6xl mb-4">📝</div>
+          <h3
+            class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2"
+          >
+            No habits yet
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400 mb-6">
+            Start building your identity by adding your first habit!
+          </p>
+          <a
+            href="add-edit.html"
+            class="inline-block btn-primary text-white px-6 py-3 rounded-full font-medium transition-colors shadow-lg"
+          >
+            Create Your First Habit
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav
+      class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-2xl"
+    >
+      <div class="max-w-4xl mx-auto px-6 py-3">
+        <div class="flex justify-around items-center">
+          <a
+            href="index.html"
+            class="flex flex-col items-center text-purple-500"
+          >
+            <i class="fas fa-home text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Home</span>
+          </a>
+          <a
+            href="add-edit.html"
+            class="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+          >
+            <i class="fas fa-plus-circle text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Add</span>
+          </a>
+          <a
+            href="focus.html"
+            class="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+          >
+            <i class="fas fa-clock text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Focus</span>
+          </a>
+          <a
+            href="accountability.html"
+            class="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+          >
+            <i class="fas fa-users text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Buddy</span>
+          </a>
+          <a
+            href="profile.html"
+            class="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+          >
+            <i class="fas fa-user-circle text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Profile</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <script>
+      // ==================== SHARED CONFIGURATION ====================
+
+      function getUserProfile() {
+        const profile = localStorage.getItem("userProfile");
+        return profile
+          ? JSON.parse(profile)
+          : {
+              name: "",
+              email: "",
+              avatar: "👤",
+              theme: "light",
+              accentColor: "purple",
+              notifications: true,
+              weekStart: "monday",
+              language: "en",
+            };
+      }
+
+      function saveUserProfile(profile) {
+        localStorage.setItem("userProfile", JSON.stringify(profile));
+        applyThemeAndColors();
+      }
+
+      const colorSchemes = {
+        purple: {
+          primary: "#8b5cf6",
+          primaryHover: "#7c3aed",
+          primaryLight: "#ede9fe",
+          primaryDark: "#6d28d9",
+        },
+        blue: {
+          primary: "#3b82f6",
+          primaryHover: "#2563eb",
+          primaryLight: "#dbeafe",
+          primaryDark: "#1e40af",
+        },
+        green: {
+          primary: "#10b981",
+          primaryHover: "#059669",
+          primaryLight: "#d1fae5",
+          primaryDark: "#047857",
+        },
+        pink: {
+          primary: "#ec4899",
+          primaryHover: "#db2777",
+          primaryLight: "#fce7f3",
+          primaryDark: "#be185d",
+        },
+        orange: {
+          primary: "#f97316",
+          primaryHover: "#ea580c",
+          primaryLight: "#ffedd5",
+          primaryDark: "#c2410c",
+        },
+        indigo: {
+          primary: "#6366f1",
+          primaryHover: "#4f46e5",
+          primaryLight: "#e0e7ff",
+          primaryDark: "#4338ca",
+        },
+      };
+
+      function initTheme() {
+        const profile = getUserProfile();
+        if (profile.theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+        updateThemeToggleIcon();
+        applyAccentColor(profile.accentColor);
+      }
+
+      function toggleTheme() {
+        const profile = getUserProfile();
+        profile.theme = profile.theme === "dark" ? "light" : "dark";
+        saveUserProfile(profile);
+      }
+
+      function updateThemeToggleIcon() {
+        const profile = getUserProfile();
+        const isDark = profile.theme === "dark";
+        const moonIcon = document.querySelector("#themeToggle .fa-moon");
+        const sunIcon = document.querySelector("#themeToggle .fa-sun");
+        if (moonIcon && sunIcon) {
+          if (isDark) {
+            moonIcon.classList.add("hidden");
+            sunIcon.classList.remove("hidden");
+          } else {
+            moonIcon.classList.remove("hidden");
+            sunIcon.classList.add("hidden");
+          }
+        }
+      }
+
+      function applyAccentColor(color) {
+        const scheme = colorSchemes[color] || colorSchemes.purple;
+        const root = document.documentElement;
+        root.style.setProperty("--color-primary", scheme.primary);
+        root.style.setProperty("--color-primary-hover", scheme.primaryHover);
+        root.style.setProperty("--color-primary-light", scheme.primaryLight);
+        root.style.setProperty("--color-primary-dark", scheme.primaryDark);
+        document.documentElement.setAttribute("data-accent-color", color);
+        injectDynamicStyles(color, scheme);
+      }
+
+      function injectDynamicStyles(color, scheme) {
+        const existingStyle = document.getElementById("dynamic-accent-styles");
+        if (existingStyle) existingStyle.remove();
+
+        const style = document.createElement("style");
+        style.id = "dynamic-accent-styles";
+        style.textContent = `
+          .btn-primary { background-color: ${scheme.primary} !important; }
+          .btn-primary:hover { background-color: ${scheme.primaryHover} !important; }
+          .text-primary { color: ${scheme.primary} !important; }
+          nav a.text-purple-500, nav a.text-blue-500, nav a.text-green-500,
+          nav a.text-pink-500, nav a.text-orange-500, nav a.text-indigo-500 { color: ${scheme.primary} !important; }
+          .hover\\:text-purple-500:hover, .hover\\:text-purple-600:hover { color: ${scheme.primary} !important; }
+          .text-purple-500, .text-purple-600 { color: ${scheme.primary} !important; }
+          .border-purple-500, .peer-checked\\:border-purple-500:checked { border-color: ${scheme.primary} !important; }
+          .hover\\:border-purple-500:hover, .hover\\:border-purple-300:hover { border-color: ${scheme.primary} !important; }
+          .ring-purple-500 { --tw-ring-color: ${scheme.primary} !important; }
+          .hover\\:bg-purple-100:hover { background-color: ${scheme.primaryLight} !important; }
+          .bg-purple-50, .peer:checked ~ .peer-checked\\:bg-purple-50 { background-color: ${scheme.primaryLight} !important; }
+          .dark .peer:checked ~ .dark\\:peer-checked\\:bg-purple-900\\/20 { background-color: ${scheme.primaryDark}33 !important; }
+          .dark .dark\\:text-purple-400 { color: ${scheme.primaryLight} !important; }
+          #dailyMotivationCard { background: linear-gradient(135deg, ${scheme.primary}, ${scheme.primaryDark}) !important; }
+          .accent-gradient { background: linear-gradient(135deg, ${scheme.primary}, ${scheme.primaryDark}) !important; }
+        `;
+        document.head.appendChild(style);
+      }
+
+      // ==================== LANGUAGE SUPPORT ====================
+
+      const translations = {
+        en: {
+          welcomeBack: "Welcome back",
+          dailyMotivation: "Daily Motivation",
+          dayStreak: "Day Streak",
+          totalPoints: "Total Points",
+          completion: "Completion",
+          yourGrowthTree: "Your Growth Tree",
+          growTreeMsg: "Complete habits to grow your tree!",
+          todaysHabits: "Today's Habits",
+          addHabit: "Add Habit",
+          noHabitsYet: "You haven't added any habits yet!",
+          startJourney: "Start your journey by adding your first habit.",
+          createFirstHabit: "Create First Habit",
+          why: "Why:",
+          streakProtected: "Streak Protected",
+          navHome: "Home",
+          navAdd: "Add",
+          navFocus: "Focus",
+          navBuddy: "Buddy",
+          navProfile: "Profile",
+          day: "day",
+          days: "days",
+        },
+        de: {
+          welcomeBack: "Willkommen zurück",
+          dailyMotivation: "Tägliche Motivation",
+          dayStreak: "Tage-Streak",
+          totalPoints: "Gesamtpunkte",
+          completion: "Abschluss",
+          yourGrowthTree: "Dein Wachstumsbaum",
+          growTreeMsg:
+            "Schließe Gewohnheiten ab, um deinen Baum wachsen zu lassen!",
+          todaysHabits: "Heutige Gewohnheiten",
+          addHabit: "Hinzufügen",
+          noHabitsYet: "Du hast noch keine Gewohnheiten!",
+          startJourney: "Beginne deine Reise mit deiner ersten Gewohnheit.",
+          createFirstHabit: "Erste Gewohnheit erstellen",
+          why: "Warum:",
+          streakProtected: "Streak geschützt",
+          navHome: "Start",
+          navAdd: "Neu",
+          navFocus: "Fokus",
+          navBuddy: "Buddy",
+          navProfile: "Profil",
+          day: "Tag",
+          days: "Tage",
+        },
+        es: {
+          welcomeBack: "Bienvenido de nuevo",
+          dailyMotivation: "Motivación Diaria",
+          dayStreak: "Racha",
+          totalPoints: "Puntos Totales",
+          completion: "Completado",
+          yourGrowthTree: "Tu Árbol de Crecimiento",
+          growTreeMsg: "¡Completa hábitos para hacer crecer tu árbol!",
+          todaysHabits: "Hábitos de Hoy",
+          addHabit: "Añadir",
+          noHabitsYet: "¡Aún no has añadido ningún hábito!",
+          startJourney: "Comienza tu viaje añadiendo tu primer hábito.",
+          createFirstHabit: "Crear Primer Hábito",
+          why: "Por qué:",
+          streakProtected: "Racha protegida",
+          navHome: "Inicio",
+          navAdd: "Añadir",
+          navFocus: "Enfoque",
+          navBuddy: "Compañero",
+          navProfile: "Perfil",
+          day: "día",
+          days: "días",
+        },
+        fr: {
+          welcomeBack: "Bon retour",
+          dailyMotivation: "Motivation du Jour",
+          dayStreak: "Jours consécutifs",
+          totalPoints: "Points Totaux",
+          completion: "Achèvement",
+          yourGrowthTree: "Votre Arbre de Croissance",
+          growTreeMsg:
+            "Complétez des habitudes pour faire grandir votre arbre!",
+          todaysHabits: "Habitudes d'Aujourd'hui",
+          addHabit: "Ajouter",
+          noHabitsYet: "Vous n'avez pas encore ajouté d'habitudes!",
+          startJourney:
+            "Commencez votre parcours en ajoutant votre première habitude.",
+          createFirstHabit: "Créer la Première Habitude",
+          why: "Pourquoi:",
+          streakProtected: "Série protégée",
+          navHome: "Accueil",
+          navAdd: "Ajouter",
+          navFocus: "Focus",
+          navBuddy: "Partenaire",
+          navProfile: "Profil",
+          day: "jour",
+          days: "jours",
+        },
+      };
+
+      function t(key) {
+        const lang = getUserProfile().language || "en";
+        return (
+          (translations[lang] && translations[lang][key]) ||
+          translations.en[key] ||
+          key
+        );
+      }
+
+      function applyLanguage() {
+        // Update nav labels
+        const navLabels = document.querySelectorAll("nav a span");
+        const navKeys = [
+          "navHome",
+          "navAdd",
+          "navFocus",
+          "navBuddy",
+          "navProfile",
+        ];
+        navLabels.forEach((label, i) => {
+          if (navKeys[i]) label.textContent = t(navKeys[i]);
+        });
+
+        // Update static text
+        const dailyMotivationLabel = document.querySelector(
+          "#dailyMotivationCard h2",
+        );
+        if (dailyMotivationLabel)
+          dailyMotivationLabel.textContent = t("dailyMotivation");
+
+        const streakLabel = document
+          .querySelector("#currentStreak")
+          ?.parentElement?.querySelector(".text-xs");
+        if (streakLabel) streakLabel.textContent = t("dayStreak");
+
+        const pointsLabel = document
+          .querySelector("#totalPoints")
+          ?.parentElement?.querySelector(".text-xs");
+        if (pointsLabel) pointsLabel.textContent = t("totalPoints");
+
+        const completionLabel = document
+          .querySelector("#completionRate")
+          ?.parentElement?.querySelector(".text-xs");
+        if (completionLabel) completionLabel.textContent = t("completion");
+
+        const treeTitle = document
+          .querySelector("#treeContainer")
+          ?.parentElement?.querySelector("h3");
+        if (treeTitle) treeTitle.textContent = t("yourGrowthTree");
+
+        const treeMsg = document
+          .querySelector("#treeContainer")
+          ?.parentElement?.querySelector("p");
+        if (treeMsg) treeMsg.textContent = t("growTreeMsg");
+
+        const habitsTitle = document
+          .querySelector("#habitsList")
+          ?.parentElement?.querySelector("h2");
+        if (habitsTitle) habitsTitle.textContent = t("todaysHabits");
+
+        const addHabitLink = document.querySelector(
+          'a[href="add-edit.html"] span:not(.text-xs)',
+        );
+        if (addHabitLink) addHabitLink.textContent = t("addHabit");
+      }
+
+      function applyThemeAndColors() {
+        initTheme();
+        applyLanguage();
+      }
+
+      function setupThemeToggle() {
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          themeToggle.addEventListener("click", toggleTheme);
+        }
+      }
+
+      // Auto-initialize
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+          initTheme();
+          setupThemeToggle();
+        });
+      } else {
+        initTheme();
+        setupThemeToggle();
+      }
+
+      // ==================== SHARED UTILITIES ====================
+
+      // Theme Management is now in shared-config.js
+      // Kept for backward compatibility
+      function getHabits_local() {
+        return getHabits
+          ? getHabits()
+          : JSON.parse(localStorage.getItem("habits") || "[]");
+      }
+
+      // ==================== DATA MANAGEMENT ====================
+
+      function getHabits() {
+        const habits = localStorage.getItem("habits");
+        return habits ? JSON.parse(habits) : [];
+      }
+
+      function saveHabits(habits) {
+        localStorage.setItem("habits", JSON.stringify(habits));
+      }
+
+      function getStats() {
+        const stats = localStorage.getItem("stats");
+        return stats
+          ? JSON.parse(stats)
+          : {
+              currentStreak: 0,
+              totalPoints: 0,
+              completedToday: 0,
+              lastCompletionDate: null,
+              treeStage: 0,
+            };
+      }
+
+      function saveStats(stats) {
+        localStorage.setItem("stats", JSON.stringify(stats));
+      }
+
+      // ==================== DAILY QUOTE ====================
+
+      const quotes = [
+        {
+          text: "You don't have to be great to start, but you have to start to be great.",
+          author: "Zig Ziglar",
+        },
+        {
+          text: "Every action you take is a vote for the type of person you wish to become.",
+          author: "James Clear",
+        },
+        {
+          text: "Success is the sum of small efforts repeated day in and day out.",
+          author: "Robert Collier",
+        },
+        {
+          text: "You are what you repeatedly do. Excellence, then, is not an act but a habit.",
+          author: "Aristotle",
+        },
+        {
+          text: "The secret of getting ahead is getting started.",
+          author: "Mark Twain",
+        },
+        {
+          text: "Small daily improvements over time lead to stunning results.",
+          author: "Robin Sharma",
+        },
+      ];
+
+      function displayDailyQuote() {
+        const today = new Date().toDateString();
+        let savedQuoteData = localStorage.getItem("dailyQuoteData");
+
+        if (savedQuoteData) {
+          savedQuoteData = JSON.parse(savedQuoteData);
+          if (savedQuoteData.date === today) {
+            displayQuote(savedQuoteData.quote);
+            updateFavoriteIcon(savedQuoteData.isFavorite);
+            return;
+          }
+        }
+
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        const quoteData = {
+          quote: randomQuote,
+          date: today,
+          isFavorite: false,
+        };
+        localStorage.setItem("dailyQuoteData", JSON.stringify(quoteData));
+        displayQuote(randomQuote);
+        updateFavoriteIcon(false);
+      }
+
+      function displayQuote(quote) {
+        document.getElementById("dailyQuote").textContent = `"${quote.text}"`;
+        document.getElementById("quoteAuthor").textContent =
+          `— ${quote.author}`;
+      }
+
+      function updateFavoriteIcon(isFavorite) {
+        const icon = document.querySelector("#favoriteQuote i");
+        icon.className = isFavorite
+          ? "fas fa-heart text-white"
+          : "far fa-heart text-white";
+      }
+
+      document.getElementById("favoriteQuote").addEventListener("click", () => {
+        const quoteData = JSON.parse(localStorage.getItem("dailyQuoteData"));
+        quoteData.isFavorite = !quoteData.isFavorite;
+        localStorage.setItem("dailyQuoteData", JSON.stringify(quoteData));
+        updateFavoriteIcon(quoteData.isFavorite);
+      });
+
+      // ==================== CONFETTI ANIMATION ====================
+
+      function triggerConfetti(x, y) {
+        const colors = ["#10b981", "#facc15", "#8b5cf6", "#ec4899", "#3b82f6"];
+        for (let i = 0; i < 15; i++) {
+          const confetti = document.createElement("div");
+          confetti.className = "confetti";
+          confetti.style.left = x + "px";
+          confetti.style.top = y + "px";
+          confetti.style.backgroundColor =
+            colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.transform = `translate(${Math.random() * 100 - 50}px, 0)`;
+          document.body.appendChild(confetti);
+          setTimeout(() => confetti.remove(), 1000);
+        }
+      }
+
+      // ==================== TREE VISUALIZATION ====================
+
+      const treeStages = ["🌱", "🌿", "🌳", "🌳✨", "🌳🌟"];
+
+      function updateTree() {
+        const stats = getStats();
+        const stage = Math.min(
+          Math.floor(stats.totalPoints / 10),
+          treeStages.length - 1,
+        );
+        document.getElementById("treeContainer").textContent =
+          treeStages[stage];
+        stats.treeStage = stage;
+        saveStats(stats);
+      }
+
+      // ==================== STATS DISPLAY ====================
+
+      function updateStatsDisplay() {
+        const stats = getStats();
+        document.getElementById("currentStreak").textContent =
+          stats.currentStreak;
+        document.getElementById("totalPoints").textContent = stats.totalPoints;
+
+        const habits = getHabits();
+        const todayHabits = habits.filter((h) => shouldShowToday(h));
+        const completedToday = todayHabits.filter((h) =>
+          isCompletedToday(h),
+        ).length;
+        const rate =
+          todayHabits.length > 0
+            ? Math.round((completedToday / todayHabits.length) * 100)
+            : 0;
+        document.getElementById("completionRate").textContent = rate + "%";
+
+        updateTree();
+      }
+
+      // ==================== HABITS DISPLAY ====================
+
+      function shouldShowToday(habit) {
+        if (!habit.schedule || habit.schedule.length === 0) return true;
+        const now = new Date();
+        const hour = now.getHours();
+
+        return habit.schedule.some((time) => {
+          if (time === "morning" && hour >= 5 && hour < 12) return true;
+          if (time === "afternoon" && hour >= 12 && hour < 18) return true;
+          if ((time === "evening" && hour >= 18) || hour < 5) return true;
+          return false;
+        });
+      }
+
+      function isCompletedToday(habit) {
+        if (!habit.completions || habit.completions.length === 0) return false;
+        const today = new Date().toDateString();
+        return habit.completions.some(
+          (date) => new Date(date).toDateString() === today,
+        );
+      }
+
+      function getTimeIcon(schedule) {
+        if (!schedule || schedule.length === 0) return "🕐";
+        if (schedule.includes("morning")) return "☀️";
+        if (schedule.includes("afternoon")) return "🌤️";
+        if (schedule.includes("evening")) return "🌙";
+        return "🕐";
+      }
+
+      function renderHabits() {
+        const habits = getHabits();
+        const habitsList = document.getElementById("habitsList");
+        const emptyState = document.getElementById("emptyState");
+
+        if (habits.length === 0) {
+          habitsList.innerHTML = "";
+          emptyState.classList.remove("hidden");
+          return;
+        }
+
+        emptyState.classList.add("hidden");
+
+        const todayHabits = habits.filter((h) => shouldShowToday(h));
+
+        if (todayHabits.length === 0) {
+          habitsList.innerHTML = `
+                    <div class="text-center py-8 text-gray-600 dark:text-gray-400">
+                        <div class="text-4xl mb-3">✅</div>
+                        <p>No habits scheduled for this time of day</p>
+                    </div>
+                `;
+          return;
+        }
+
+        habitsList.innerHTML = todayHabits
+          .map((habit) => {
+            const completed = isCompletedToday(habit);
+            const streak = habit.streak || 0;
+            const hasStreakFreeze = habit.streakFreeze || false;
+
+            return `
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-md hover:shadow-lg transition-all ${completed ? "border-2 border-emerald-500" : ""}">
+                        <div class="flex items-start gap-4">
+                            <button 
+                                onclick="toggleHabit('${habit.id}')" 
+                                class="flex-shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all
+                                    ${completed ? "bg-emerald-500 border-emerald-500" : "border-gray-300 dark:border-gray-600 hover:border-purple-500"}">
+                                ${completed ? '<i class="fas fa-check text-white"></i>' : ""}
+                            </button>
+                            
+                            <div class="flex-grow">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-2xl">${habit.icon || "⭐"}</span>
+                                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white ${completed ? "line-through" : ""}">
+                                        ${habit.name}
+                                    </h3>
+                                    <span class="text-xl">${getTimeIcon(habit.schedule)}</span>
+                                </div>
+                                
+                                ${
+                                  habit.identity
+                                    ? `
+                                    <p class="text-sm text-purple-600 dark:text-purple-400 font-medium mb-2">
+                                        💭 I am ${habit.identity}
+                                    </p>
+                                `
+                                    : ""
+                                }
+                                
+                                ${
+                                  habit.why
+                                    ? `
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                                        <strong>Why:</strong> ${habit.why}
+                                    </p>
+                                `
+                                    : ""
+                                }
+                                
+                                <div class="flex items-center gap-4 flex-wrap">
+                                    <div class="flex items-center gap-2 bg-yellow-100 dark:bg-yellow-900/30 px-3 py-1 rounded-full">
+                                        <span class="text-lg">🔥</span>
+                                        <span class="text-sm font-bold text-yellow-700 dark:text-yellow-400">${streak} day${streak !== 1 ? "s" : ""}</span>
+                                    </div>
+                                    
+                                    ${
+                                      hasStreakFreeze
+                                        ? `
+                                        <div class="flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400">
+                                            <i class="fas fa-shield-alt"></i>
+                                            <span>Streak Protected</span>
+                                        </div>
+                                    `
+                                        : ""
+                                    }
+                                    
+                                    ${
+                                      habit.habitStack
+                                        ? `
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                                            <i class="fas fa-link"></i> After: ${habit.habitStack}
+                                        </div>
+                                    `
+                                        : ""
+                                    }
+                                </div>
+                            </div>
+                            
+                            <a href="add-edit.html?id=${habit.id}" class="text-gray-400 hover:text-purple-500 transition-colors">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+          })
+          .join("");
+      }
+
+      // ==================== HABIT COMPLETION ====================
+
+      function toggleHabit(habitId) {
+        const habits = getHabits();
+        const habit = habits.find((h) => h.id === habitId);
+
+        if (!habit) return;
+
+        const today = new Date().toDateString();
+        const alreadyCompleted = isCompletedToday(habit);
+
+        if (alreadyCompleted) {
+          // Uncomplete
+          habit.completions = habit.completions.filter(
+            (date) => new Date(date).toDateString() !== today,
+          );
+        } else {
+          // Complete
+          if (!habit.completions) habit.completions = [];
+          habit.completions.push(new Date().toISOString());
+
+          // Update streak
+          habit.streak = (habit.streak || 0) + 1;
+
+          // Update stats
+          const stats = getStats();
+          stats.currentStreak = Math.max(stats.currentStreak, habit.streak);
+          stats.totalPoints += 10;
+          stats.lastCompletionDate = today;
+          saveStats(stats);
+
+          // Trigger confetti
+          const button = event.target.closest("button");
+          const rect = button.getBoundingClientRect();
+          triggerConfetti(
+            rect.left + rect.width / 2,
+            rect.top + rect.height / 2,
+          );
+        }
+
+        saveHabits(habits);
+        renderHabits();
+        updateStatsDisplay();
+        renderChallenge();
+      }
+
+      // ==================== INITIALIZATION ====================
+
+      // ==================== 21-DAY CHALLENGE ====================
+
+      function getChallengeData() {
+        const data = localStorage.getItem("challengeData");
+        if (data) return JSON.parse(data);
+
+        // Initialize challenge from first habit creation date
+        const habits = getHabits();
+        let startDate = new Date().toISOString().split("T")[0];
+        if (habits.length > 0) {
+          const oldest = habits.reduce((a, b) =>
+            (a.createdAt || a.id) < (b.createdAt || b.id) ? a : b,
+          );
+          if (oldest.createdAt) {
+            startDate = new Date(oldest.createdAt).toISOString().split("T")[0];
+          }
+        }
+
+        return {
+          startDate: startDate,
+          days: {},
+        };
+      }
+
+      function saveChallengeData(data) {
+        localStorage.setItem("challengeData", JSON.stringify(data));
+      }
+
+      function updateChallengeFromHabits() {
+        const habits = getHabits();
+        const challenge = getChallengeData();
+        const todayISO = new Date().toISOString().split("T")[0];
+        const todayStr = new Date().toDateString();
+
+        // Check if all habits are completed today
+        if (habits.length > 0) {
+          const allCompleted = habits.every((h) => {
+            if (!h.completions || h.completions.length === 0) return false;
+            return h.completions.some(
+              (d) => new Date(d).toDateString() === todayStr,
+            );
+          });
+          const someCompleted = habits.some((h) => {
+            if (!h.completions || h.completions.length === 0) return false;
+            return h.completions.some(
+              (d) => new Date(d).toDateString() === todayStr,
+            );
+          });
+
+          if (allCompleted) {
+            challenge.days[todayISO] = "completed";
+          } else if (someCompleted) {
+            challenge.days[todayISO] = "partial";
+          } else {
+            delete challenge.days[todayISO];
+          }
+        }
+
+        saveChallengeData(challenge);
+        return challenge;
+      }
+
+      function renderChallenge() {
+        const challenge = updateChallengeFromHabits();
+        const grid = document.getElementById("challengeGrid");
+        const progressEl = document.getElementById("challengeProgress");
+        const progressBar = document.getElementById("challengeProgressBar");
+        const messageEl = document.getElementById("challengeMessage");
+        const resilienceEl = document.getElementById("resilienceMessage");
+
+        if (!grid) return;
+
+        const startDate = new Date(challenge.startDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        let completedDays = 0;
+        let missedDays = [];
+        let html = "";
+
+        for (let i = 0; i < 21; i++) {
+          const dayDate = new Date(startDate);
+          dayDate.setDate(startDate.getDate() + i);
+          dayDate.setHours(0, 0, 0, 0);
+          const dateStr = dayDate.toISOString().split("T")[0];
+          const dayNum = i + 1;
+          const status = challenge.days[dateStr];
+
+          if (status === "completed") {
+            completedDays++;
+            html += `<div class="aspect-square accent-gradient rounded-lg flex items-center justify-center text-white text-xs font-bold shadow-sm">${dayNum}</div>`;
+          } else if (status === "partial" && dayDate <= today) {
+            html += `<div class="aspect-square bg-amber-100 dark:bg-amber-900/40 rounded-lg flex items-center justify-center text-amber-600 dark:text-amber-300 text-xs font-bold relative">
+              <span>${dayNum}</span>
+              <span class="absolute -top-1 -right-1 text-[8px]">⚠️</span>
+            </div>`;
+            missedDays.push(dayNum);
+          } else if (dayDate < today) {
+            html += `<div class="aspect-square bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center text-red-400 dark:text-red-500 text-xs font-bold">
+              ${dayNum}
+            </div>`;
+            missedDays.push(dayNum);
+          } else if (dayDate.toDateString() === today.toDateString()) {
+            html += `<div class="aspect-square bg-gray-100 dark:bg-gray-700 border-2 border-dashed border-purple-400 dark:border-purple-500 rounded-lg flex items-center justify-center text-purple-500 dark:text-purple-400 text-xs font-bold animate-pulse">${dayNum}</div>`;
+          } else {
+            html += `<div class="aspect-square bg-gray-100 dark:bg-gray-700 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center text-gray-400 dark:text-gray-500 text-xs">${dayNum}</div>`;
+          }
+        }
+
+        grid.innerHTML = html;
+
+        // Update progress
+        progressEl.textContent = `${completedDays}/21 Days`;
+        const percent = Math.round((completedDays / 21) * 100);
+        progressBar.style.width = percent + "%";
+
+        const remaining = 21 - completedDays;
+        if (completedDays === 21) {
+          messageEl.textContent =
+            "🎉 Congratulations! You completed the 21-Day Challenge!";
+        } else if (completedDays > 0) {
+          messageEl.textContent = `${remaining} days until milestone! 🎯`;
+        } else {
+          messageEl.textContent =
+            "Complete all habits today to start your streak!";
+        }
+
+        // Show resilience message if there are missed days
+        if (missedDays.length > 0 && completedDays > 0) {
+          resilienceEl.classList.remove("hidden");
+          document.getElementById("resilienceText").textContent =
+            `Day ${missedDays[missedDays.length - 1]} wasn't perfect, but you kept going. That's what resilience looks like!`;
+        } else {
+          resilienceEl.classList.add("hidden");
+        }
+      }
+
+      // Load user profile for personalization
+      function loadUserInfo() {
+        if (typeof getUserProfile === "function") {
+          const profile = getUserProfile();
+          if (profile.name) {
+            document.getElementById("welcomeMessage").textContent =
+              `Welcome back, ${profile.name}`;
+          }
+          document.getElementById("userAvatar").textContent =
+            profile.avatar || "👤";
+        }
+      }
+
+      initTheme();
+      displayDailyQuote();
+      renderHabits();
+      updateStatsDisplay();
+      renderChallenge();
+      loadUserInfo();
+      applyLanguage();
+    </script>
+  </body>
+</html>

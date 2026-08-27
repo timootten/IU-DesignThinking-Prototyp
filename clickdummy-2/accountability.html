@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accountability Buddy - Habit Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <!-- Theme Toggle -->
+    <div class="fixed top-4 right-4 z-50">
+      <button
+        id="themeToggle"
+        class="p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all"
+      >
+        <i class="fas fa-moon dark:hidden text-gray-700"></i>
+        <i class="fas fa-sun hidden dark:inline text-yellow-400"></i>
+      </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto p-6 pb-24">
+      <!-- Header -->
+      <header class="mb-8 mt-12">
+        <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-2">
+          Accountability Buddy 🤝
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Stay motivated together with a partner
+        </p>
+      </header>
+
+      <!-- Enable/Disable Toggle -->
+      <div
+        class="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-6 mb-8 shadow-xl"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-white mb-2">
+              Accountability Feature
+            </h2>
+            <p class="text-white/80 text-sm">
+              Share your progress and stay motivated together
+            </p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              id="accountabilityToggle"
+              class="sr-only peer"
+            />
+            <div
+              class="w-16 h-8 bg-white/30 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-8 after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-emerald-500"
+            ></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Disabled State -->
+      <div id="disabledState" class="hidden text-center py-12">
+        <div class="text-6xl mb-4">🔒</div>
+        <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          Accountability is turned off
+        </h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+          Enable it above to connect with an accountability buddy
+        </p>
+      </div>
+
+      <!-- Enabled Content -->
+      <div id="enabledContent">
+        <!-- Current Buddy Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-3xl p-6 mb-8 shadow-md">
+          <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4">
+            <i class="fas fa-user-friends mr-2 text-purple-500"></i>Your
+            Accountability Buddy
+          </h2>
+
+          <div class="flex items-center gap-4 mb-4">
+            <div
+              class="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-2xl font-bold text-white"
+            >
+              SL
+            </div>
+            <div class="flex-grow">
+              <h3 class="text-xl font-bold text-gray-800 dark:text-white">
+                Sarah L.
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Connected 14 days ago
+              </p>
+            </div>
+            <button class="text-gray-400 hover:text-red-500 transition-colors">
+              <i class="fas fa-user-times"></i>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div
+              class="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-3 text-center"
+            >
+              <div
+                class="text-2xl font-bold text-purple-600 dark:text-purple-400"
+              >
+                23
+              </div>
+              <div class="text-xs text-gray-600 dark:text-gray-400">
+                Day Streak
+              </div>
+            </div>
+            <div
+              class="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-3 text-center"
+            >
+              <div
+                class="text-2xl font-bold text-emerald-600 dark:text-emerald-400"
+              >
+                89%
+              </div>
+              <div class="text-xs text-gray-600 dark:text-gray-400">
+                Completion
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+          <button
+            class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md hover:shadow-lg transition-all text-center"
+          >
+            <div class="text-3xl mb-2">📸</div>
+            <div class="text-sm font-semibold text-gray-800 dark:text-white">
+              Share Photo
+            </div>
+          </button>
+          <button
+            class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md hover:shadow-lg transition-all text-center"
+          >
+            <div class="text-3xl mb-2">💬</div>
+            <div class="text-sm font-semibold text-gray-800 dark:text-white">
+              Send Message
+            </div>
+          </button>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="mb-8">
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">
+            Recent Activity
+          </h2>
+
+          <div class="space-y-4">
+            <!-- Feed Item 1 -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-md">
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-lg font-bold text-white flex-shrink-0"
+                >
+                  SL
+                </div>
+                <div class="flex-grow">
+                  <div class="flex items-center gap-2 mb-2">
+                    <h3 class="font-bold text-gray-800 dark:text-white">
+                      Sarah L.
+                    </h3>
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >2 hours ago</span
+                    >
+                  </div>
+                  <p class="text-gray-700 dark:text-gray-300 mb-3">
+                    ✅ Completed morning workout! Feeling great 💪
+                  </p>
+                  <div
+                    class="bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden"
+                  >
+                    <img
+                      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%236366f1'/%3E%3Ctext x='50%25' y='50%25' font-size='48' text-anchor='middle' dy='.3em' fill='white'%3E🏃‍♀️%3C/text%3E%3C/svg%3E"
+                      alt="Workout photo"
+                      class="w-full h-48 object-cover"
+                    />
+                  </div>
+                  <div class="flex items-center gap-4 mt-3">
+                    <button
+                      class="text-red-500 hover:text-red-600 transition-colors"
+                    >
+                      <i class="fas fa-heart"></i>
+                      <span class="text-sm">12</span>
+                    </button>
+                    <button
+                      class="text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+                    >
+                      <i class="fas fa-comment"></i>
+                      <span class="text-sm">3</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feed Item 2 -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-md">
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-blue-400 rounded-full flex items-center justify-center text-lg font-bold text-white flex-shrink-0"
+                >
+                  ME
+                </div>
+                <div class="flex-grow">
+                  <div class="flex items-center gap-2 mb-2">
+                    <h3 class="font-bold text-gray-800 dark:text-white">You</h3>
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >5 hours ago</span
+                    >
+                  </div>
+                  <p class="text-gray-700 dark:text-gray-300">
+                    📚 Finished reading 15 pages today! On track to hit my goal
+                    🎯
+                  </p>
+                  <div class="flex items-center gap-4 mt-3">
+                    <button
+                      class="text-red-500 hover:text-red-600 transition-colors"
+                    >
+                      <i class="fas fa-heart"></i>
+                      <span class="text-sm">8</span>
+                    </button>
+                    <button
+                      class="text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+                    >
+                      <i class="fas fa-comment"></i>
+                      <span class="text-sm">1</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feed Item 3 -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-md">
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-lg font-bold text-white flex-shrink-0"
+                >
+                  SL
+                </div>
+                <div class="flex-grow">
+                  <div class="flex items-center gap-2 mb-2">
+                    <h3 class="font-bold text-gray-800 dark:text-white">
+                      Sarah L.
+                    </h3>
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >Yesterday</span
+                    >
+                  </div>
+                  <p class="text-gray-700 dark:text-gray-300">
+                    💰 Tracked all expenses today! Building that investor
+                    mindset 📈
+                  </p>
+                  <div class="flex items-center gap-4 mt-3">
+                    <button
+                      class="text-red-500 hover:text-red-600 transition-colors"
+                    >
+                      <i class="fas fa-heart"></i>
+                      <span class="text-sm">15</span>
+                    </button>
+                    <button
+                      class="text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+                    >
+                      <i class="fas fa-comment"></i>
+                      <span class="text-sm">2</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feed Item 4 -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-md">
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-lg font-bold text-white flex-shrink-0"
+                >
+                  SL
+                </div>
+                <div class="flex-grow">
+                  <div class="flex items-center gap-2 mb-2">
+                    <h3 class="font-bold text-gray-800 dark:text-white">
+                      Sarah L.
+                    </h3>
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >2 days ago</span
+                    >
+                  </div>
+                  <p class="text-gray-700 dark:text-gray-300 mb-3">
+                    🧘 Morning meditation complete! Starting the day with
+                    clarity ✨
+                  </p>
+                  <div
+                    class="bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden"
+                  >
+                    <img
+                      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%2310b981'/%3E%3Ctext x='50%25' y='50%25' font-size='48' text-anchor='middle' dy='.3em' fill='white'%3E🧘‍♀️%3C/text%3E%3C/svg%3E"
+                      alt="Meditation photo"
+                      class="w-full h-48 object-cover"
+                    />
+                  </div>
+                  <div class="flex items-center gap-4 mt-3">
+                    <button
+                      class="text-red-500 hover:text-red-600 transition-colors"
+                    >
+                      <i class="fas fa-heart"></i>
+                      <span class="text-sm">20</span>
+                    </button>
+                    <button
+                      class="text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+                    >
+                      <i class="fas fa-comment"></i>
+                      <span class="text-sm">5</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Find New Buddy CTA -->
+        <div
+          class="bg-gradient-to-r from-pink-500 to-orange-500 rounded-3xl p-6 shadow-xl text-center"
+        >
+          <div class="text-4xl mb-3">🔍</div>
+          <h3 class="text-lg font-bold text-white mb-2">
+            Looking for more accountability?
+          </h3>
+          <p class="text-white/80 text-sm mb-4">
+            Connect with more people who share your goals
+          </p>
+          <button
+            class="bg-white text-pink-600 px-6 py-2 rounded-full font-semibold hover:bg-pink-50 transition-colors shadow-lg"
+          >
+            Find More Buddies
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav
+      class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-2xl"
+    >
+      <div class="max-w-4xl mx-auto px-6 py-3">
+        <div class="flex justify-around items-center">
+          <a
+            href="index.html"
+            class="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+          >
+            <i class="fas fa-home text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Home</span>
+          </a>
+          <a
+            href="add-edit.html"
+            class="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+          >
+            <i class="fas fa-plus-circle text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Add</span>
+          </a>
+          <a
+            href="focus.html"
+            class="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+          >
+            <i class="fas fa-clock text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Focus</span>
+          </a>
+          <a
+            href="accountability.html"
+            class="flex flex-col items-center text-purple-500"
+          >
+            <i class="fas fa-users text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Buddy</span>
+          </a>
+          <a
+            href="profile.html"
+            class="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors"
+          >
+            <i class="fas fa-user-circle text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Profile</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <script>
+      // ==================== SHARED CONFIGURATION ====================
+
+      function getUserProfile() {
+        const profile = localStorage.getItem("userProfile");
+        return profile
+          ? JSON.parse(profile)
+          : {
+              name: "",
+              email: "",
+              avatar: "👤",
+              theme: "light",
+              accentColor: "purple",
+              notifications: true,
+              weekStart: "monday",
+              language: "en",
+            };
+      }
+
+      function saveUserProfile(profile) {
+        localStorage.setItem("userProfile", JSON.stringify(profile));
+        applyThemeAndColors();
+      }
+
+      const colorSchemes = {
+        purple: {
+          primary: "#8b5cf6",
+          primaryHover: "#7c3aed",
+          primaryLight: "#ede9fe",
+          primaryDark: "#6d28d9",
+        },
+        blue: {
+          primary: "#3b82f6",
+          primaryHover: "#2563eb",
+          primaryLight: "#dbeafe",
+          primaryDark: "#1e40af",
+        },
+        green: {
+          primary: "#10b981",
+          primaryHover: "#059669",
+          primaryLight: "#d1fae5",
+          primaryDark: "#047857",
+        },
+        pink: {
+          primary: "#ec4899",
+          primaryHover: "#db2777",
+          primaryLight: "#fce7f3",
+          primaryDark: "#be185d",
+        },
+        orange: {
+          primary: "#f97316",
+          primaryHover: "#ea580c",
+          primaryLight: "#ffedd5",
+          primaryDark: "#c2410c",
+        },
+        indigo: {
+          primary: "#6366f1",
+          primaryHover: "#4f46e5",
+          primaryLight: "#e0e7ff",
+          primaryDark: "#4338ca",
+        },
+      };
+
+      function initTheme() {
+        const profile = getUserProfile();
+        if (profile.theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+        updateThemeToggleIcon();
+        applyAccentColor(profile.accentColor);
+      }
+
+      function toggleTheme() {
+        const profile = getUserProfile();
+        profile.theme = profile.theme === "dark" ? "light" : "dark";
+        saveUserProfile(profile);
+      }
+
+      function updateThemeToggleIcon() {
+        const profile = getUserProfile();
+        const isDark = profile.theme === "dark";
+        const moonIcon = document.querySelector("#themeToggle .fa-moon");
+        const sunIcon = document.querySelector("#themeToggle .fa-sun");
+        if (moonIcon && sunIcon) {
+          if (isDark) {
+            moonIcon.classList.add("hidden");
+            sunIcon.classList.remove("hidden");
+          } else {
+            moonIcon.classList.remove("hidden");
+            sunIcon.classList.add("hidden");
+          }
+        }
+      }
+
+      function applyAccentColor(color) {
+        const scheme = colorSchemes[color] || colorSchemes.purple;
+        const root = document.documentElement;
+        root.style.setProperty("--color-primary", scheme.primary);
+        root.style.setProperty("--color-primary-hover", scheme.primaryHover);
+        root.style.setProperty("--color-primary-light", scheme.primaryLight);
+        root.style.setProperty("--color-primary-dark", scheme.primaryDark);
+        document.documentElement.setAttribute("data-accent-color", color);
+        injectDynamicStyles(color, scheme);
+      }
+
+      function injectDynamicStyles(color, scheme) {
+        const existingStyle = document.getElementById("dynamic-accent-styles");
+        if (existingStyle) existingStyle.remove();
+
+        const style = document.createElement("style");
+        style.id = "dynamic-accent-styles";
+        style.textContent = `
+          .btn-primary { background-color: ${scheme.primary} !important; }
+          .btn-primary:hover { background-color: ${scheme.primaryHover} !important; }
+          .text-primary { color: ${scheme.primary} !important; }
+          nav a.text-purple-500, nav a.text-blue-500, nav a.text-green-500,
+          nav a.text-pink-500, nav a.text-orange-500, nav a.text-indigo-500 { color: ${scheme.primary} !important; }
+          .hover\\:text-purple-500:hover, .hover\\:text-purple-600:hover { color: ${scheme.primary} !important; }
+          .text-purple-500, .text-purple-600 { color: ${scheme.primary} !important; }
+          .border-purple-500, .peer-checked\\:border-purple-500:checked { border-color: ${scheme.primary} !important; }
+          .hover\\:border-purple-500:hover, .hover\\:border-purple-300:hover { border-color: ${scheme.primary} !important; }
+          .ring-purple-500 { --tw-ring-color: ${scheme.primary} !important; }
+          .hover\\:bg-purple-100:hover { background-color: ${scheme.primaryLight} !important; }
+          .bg-purple-50, .peer:checked ~ .peer-checked\\:bg-purple-50 { background-color: ${scheme.primaryLight} !important; }
+          .dark .peer:checked ~ .dark\\:peer-checked\\:bg-purple-900\\/20 { background-color: ${scheme.primaryDark}33 !important; }
+          .dark .dark\\:text-purple-400 { color: ${scheme.primaryLight} !important; }
+          .accent-gradient { background: linear-gradient(to right, ${scheme.primary}, ${scheme.primaryHover}) !important; }
+        `;
+        document.head.appendChild(style);
+      }
+
+      function applyLanguage() {
+        const lang = getUserProfile().language || "en";
+        const navTexts = {
+          en: ["Home", "Add", "Focus", "Buddy", "Profile"],
+          de: ["Start", "Neu", "Fokus", "Buddy", "Profil"],
+          es: ["Inicio", "Añadir", "Enfoque", "Compañero", "Perfil"],
+          fr: ["Accueil", "Ajouter", "Focus", "Partenaire", "Profil"],
+        };
+        const labels = document.querySelectorAll("nav a span");
+        const texts = navTexts[lang] || navTexts.en;
+        labels.forEach((l, i) => {
+          if (texts[i]) l.textContent = texts[i];
+        });
+      }
+
+      function applyThemeAndColors() {
+        initTheme();
+        applyLanguage();
+      }
+
+      function setupThemeToggle() {
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          themeToggle.addEventListener("click", toggleTheme);
+        }
+      }
+
+      // Auto-initialize
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+          initTheme();
+          setupThemeToggle();
+        });
+      } else {
+        initTheme();
+        setupThemeToggle();
+      }
+
+      // ==================== THEME MANAGEMENT ====================
+      // Theme management is handled by shared-config.js
+
+      // ==================== ACCOUNTABILITY TOGGLE ====================
+
+      function getAccountabilityEnabled() {
+        const enabled = localStorage.getItem("accountabilityEnabled");
+        return enabled === null ? true : enabled === "true";
+      }
+
+      function setAccountabilityEnabled(enabled) {
+        localStorage.setItem("accountabilityEnabled", enabled.toString());
+      }
+
+      function updateUI() {
+        const enabled = getAccountabilityEnabled();
+        document.getElementById("accountabilityToggle").checked = enabled;
+
+        if (enabled) {
+          document.getElementById("disabledState").classList.add("hidden");
+          document.getElementById("enabledContent").classList.remove("hidden");
+        } else {
+          document.getElementById("disabledState").classList.remove("hidden");
+          document.getElementById("enabledContent").classList.add("hidden");
+        }
+      }
+
+      document
+        .getElementById("accountabilityToggle")
+        .addEventListener("change", (e) => {
+          setAccountabilityEnabled(e.target.checked);
+          updateUI();
+        });
+
+      // ==================== INITIALIZATION ====================
+
+      initTheme();
+      updateUI();
+    </script>
+  </body>
+</html>

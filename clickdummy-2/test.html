@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Habit Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
+      <h1 class="text-3xl font-bold mb-6">🧪 Habit Tracker Test</h1>
+
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-3">Quick Test</h2>
+        <button
+          onclick="addTestHabit()"
+          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2"
+        >
+          Add Test Habit
+        </button>
+        <button
+          onclick="viewHabits()"
+          class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mr-2"
+        >
+          View Habits
+        </button>
+        <button
+          onclick="clearHabits()"
+          class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Clear All
+        </button>
+      </div>
+
+      <div
+        id="output"
+        class="bg-gray-50 p-4 rounded border border-gray-200 min-h-[200px]"
+      >
+        <p class="text-gray-500">Click a button to test...</p>
+      </div>
+
+      <div class="mt-6">
+        <h3 class="font-semibold mb-2">Quick Links:</h3>
+        <div class="flex gap-2">
+          <a href="index.html" class="text-blue-600 hover:underline"
+            >Dashboard</a
+          >
+          <span>|</span>
+          <a href="add-edit.html" class="text-blue-600 hover:underline"
+            >Add Habit</a
+          >
+          <span>|</span>
+          <a href="profile.html" class="text-blue-600 hover:underline"
+            >Profile</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function addTestHabit() {
+        const habits = JSON.parse(localStorage.getItem("habits") || "[]");
+
+        const testHabit = {
+          id: Date.now().toString(36) + Math.random().toString(36).substr(2),
+          name: "Test Habit " + (habits.length + 1),
+          identity: "a tester",
+          icon: "🧪",
+          why: "To test the system",
+          bigGoal: "Complete testing",
+          dailyTask: "Run tests",
+          habitStack: "After coffee",
+          schedule: ["morning"],
+          completions: [],
+          streak: 0,
+          createdAt: new Date().toISOString(),
+        };
+
+        habits.push(testHabit);
+        localStorage.setItem("habits", JSON.stringify(habits));
+
+        output.innerHTML = `
+                <div class="text-green-600 font-semibold mb-2">✅ Test habit added!</div>
+                <pre class="text-sm overflow-auto">${JSON.stringify(testHabit, null, 2)}</pre>
+            `;
+      }
+
+      function viewHabits() {
+        const habits = JSON.parse(localStorage.getItem("habits") || "[]");
+
+        if (habits.length === 0) {
+          output.innerHTML =
+            '<p class="text-gray-500">No habits found. Add one first!</p>';
+          return;
+        }
+
+        output.innerHTML = `
+                <div class="font-semibold mb-3">📊 Found ${habits.length} habit(s):</div>
+                ${habits
+                  .map(
+                    (h, i) => `
+                    <div class="mb-3 p-3 bg-white border rounded">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">${h.icon}</span>
+                            <strong>${h.name}</strong>
+                        </div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            ID: ${h.id}<br>
+                            Identity: I am ${h.identity}<br>
+                            Why: ${h.why}<br>
+                            Streak: ${h.streak} days
+                        </div>
+                    </div>
+                `,
+                  )
+                  .join("")}
+            `;
+      }
+
+      function clearHabits() {
+        if (confirm("Clear all habits?")) {
+          localStorage.removeItem("habits");
+          output.innerHTML =
+            '<p class="text-red-600 font-semibold">🗑️ All habits cleared!</p>';
+        }
+      }
+
+      // Show current status on load
+      window.onload = () => {
+        const habits = JSON.parse(localStorage.getItem("habits") || "[]");
+        output.innerHTML = `
+                <p class="font-semibold">Current Status:</p>
+                <p class="text-gray-700 mt-2">📋 ${habits.length} habit(s) in storage</p>
+                <p class="text-sm text-gray-500 mt-4">Click "View Habits" to see details.</p>
+            `;
+      };
+    </script>
+  </body>
+</html>

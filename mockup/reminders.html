@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reminders & Focus Mode - HabitForge</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "emerald-glow": "#10b981",
+              "lime-glow": "#84cc16",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Grayscale filter for Focus Mode simulation */
+      .focus-mode-active {
+        filter: grayscale(1);
+      }
+
+      .focus-mode-active .focus-exempt {
+        filter: grayscale(0);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-950 text-gray-100 min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo & Brand -->
+          <div class="flex items-center space-x-3">
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center"
+            >
+              <i class="fas fa-bolt text-gray-900 text-xl"></i>
+            </div>
+            <span
+              class="text-xl font-bold bg-gradient-to-r from-emerald-400 to-lime-400 bg-clip-text text-transparent"
+            >
+              HabitForge
+            </span>
+          </div>
+
+          <!-- Navigation Links -->
+          <div class="flex items-center space-x-6">
+            <a
+              href="index.html"
+              class="text-gray-400 hover:text-gray-200 transition"
+            >
+              <i class="fas fa-home mr-2"></i>Dashboard
+            </a>
+            <a
+              href="add-habit.html"
+              class="text-gray-400 hover:text-gray-200 transition"
+            >
+              <i class="fas fa-plus-circle mr-2"></i>Add Habit
+            </a>
+            <a href="reminders.html" class="text-emerald-400 font-medium">
+              <i class="fas fa-bell mr-2"></i>Reminders
+            </a>
+            <div
+              class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-700 transition"
+            >
+              <i class="fas fa-user text-gray-400"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-100 mb-2">Reminders & Focus</h1>
+        <p class="text-gray-400">
+          Stay on track with smart notifications and distraction-free focus
+        </p>
+      </div>
+
+      <!-- Grid Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Column -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Focus Mode Section -->
+          <section
+            class="bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl overflow-hidden"
+          >
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h2
+                    class="text-2xl font-bold text-white mb-2 flex items-center"
+                  >
+                    <i class="fas fa-shield-alt mr-3"></i>
+                    Focus Mode
+                  </h2>
+                  <p class="text-indigo-100 text-sm">
+                    Block distractions and enter deep work state
+                  </p>
+                </div>
+                <!-- Toggle Switch -->
+                <div class="flex items-center space-x-3">
+                  <span class="text-white text-sm font-medium">OFF</span>
+                  <div
+                    class="w-16 h-8 bg-gray-700 rounded-full p-1 cursor-pointer hover:bg-gray-600 transition"
+                  >
+                    <div
+                      class="w-6 h-6 bg-white rounded-full shadow-lg transition-transform"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <!-- Feature 1 -->
+                <div class="bg-gray-800 rounded-xl p-4">
+                  <div class="flex items-center space-x-3 mb-3">
+                    <div
+                      class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                    >
+                      <i class="fas fa-eye-slash text-purple-400"></i>
+                    </div>
+                    <h3 class="text-gray-100 font-semibold">Grayscale Mode</h3>
+                  </div>
+                  <p class="text-gray-400 text-sm">
+                    Reduce visual stimulation by converting screen to grayscale
+                  </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-gray-800 rounded-xl p-4">
+                  <div class="flex items-center space-x-3 mb-3">
+                    <div
+                      class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                    >
+                      <i class="fas fa-ban text-purple-400"></i>
+                    </div>
+                    <h3 class="text-gray-100 font-semibold">
+                      Block Distractions
+                    </h3>
+                  </div>
+                  <p class="text-gray-400 text-sm">
+                    Temporarily disable social media and entertainment apps
+                  </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-gray-800 rounded-xl p-4">
+                  <div class="flex items-center space-x-3 mb-3">
+                    <div
+                      class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                    >
+                      <i class="fas fa-bell-slash text-purple-400"></i>
+                    </div>
+                    <h3 class="text-gray-100 font-semibold">
+                      Silent Notifications
+                    </h3>
+                  </div>
+                  <p class="text-gray-400 text-sm">
+                    Mute all non-habit notifications during focus time
+                  </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-gray-800 rounded-xl p-4">
+                  <div class="flex items-center space-x-3 mb-3">
+                    <div
+                      class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                    >
+                      <i class="fas fa-clock text-purple-400"></i>
+                    </div>
+                    <h3 class="text-gray-100 font-semibold">Pomodoro Timer</h3>
+                  </div>
+                  <p class="text-gray-400 text-sm">
+                    25-minute focused work sessions with 5-minute breaks
+                  </p>
+                </div>
+              </div>
+
+              <!-- Focus Session Duration -->
+              <div class="bg-gray-800 rounded-xl p-4 mb-4">
+                <label class="block text-gray-300 font-medium mb-3"
+                  >Focus Session Duration</label
+                >
+                <div class="grid grid-cols-4 gap-3">
+                  <button
+                    class="bg-gray-900 hover:bg-purple-500/20 border-2 border-purple-500 text-purple-400 font-semibold py-2 rounded-lg transition"
+                  >
+                    25 min
+                  </button>
+                  <button
+                    class="bg-gray-900 hover:bg-gray-700 border-2 border-gray-700 hover:border-purple-500 text-gray-400 hover:text-purple-400 font-semibold py-2 rounded-lg transition"
+                  >
+                    45 min
+                  </button>
+                  <button
+                    class="bg-gray-900 hover:bg-gray-700 border-2 border-gray-700 hover:border-purple-500 text-gray-400 hover:text-purple-400 font-semibold py-2 rounded-lg transition"
+                  >
+                    60 min
+                  </button>
+                  <button
+                    class="bg-gray-900 hover:bg-gray-700 border-2 border-gray-700 hover:border-purple-500 text-gray-400 hover:text-purple-400 font-semibold py-2 rounded-lg transition"
+                  >
+                    90 min
+                  </button>
+                </div>
+              </div>
+
+              <!-- Start Focus Button -->
+              <button
+                class="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-purple-500/30 transition"
+              >
+                <i class="fas fa-play mr-2"></i>
+                Start Focus Session
+              </button>
+            </div>
+          </section>
+
+          <!-- Today's Reminder Timeline -->
+          <section
+            class="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-lg"
+          >
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold text-gray-100">
+                Today's Reminders
+              </h2>
+              <button
+                class="text-emerald-400 hover:text-emerald-300 text-sm font-medium"
+              >
+                <i class="fas fa-plus-circle mr-1"></i>
+                Add Reminder
+              </button>
+            </div>
+
+            <!-- Timeline -->
+            <div class="space-y-4">
+              <!-- Reminder 1 - Completed -->
+              <div class="relative pl-8 pb-6 border-l-2 border-emerald-500">
+                <div
+                  class="absolute -left-2 top-0 w-4 h-4 bg-emerald-500 rounded-full"
+                ></div>
+                <div
+                  class="bg-gray-800 border border-emerald-500/30 rounded-xl p-4"
+                >
+                  <div class="flex items-start justify-between mb-2">
+                    <div class="flex items-center space-x-3">
+                      <i
+                        class="fas fa-check-circle text-emerald-400 text-xl"
+                      ></i>
+                      <div>
+                        <h3 class="text-gray-300 font-semibold line-through">
+                          Read 10 pages
+                        </h3>
+                        <p class="text-gray-500 text-sm">
+                          Completed at 07:35 AM
+                        </p>
+                      </div>
+                    </div>
+                    <span class="text-gray-500 text-xs">07:30 AM</span>
+                  </div>
+                  <div class="flex items-center space-x-2 mt-3">
+                    <span
+                      class="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-full"
+                    >
+                      <i class="fas fa-mobile-alt mr-1"></i>Push
+                    </span>
+                    <span
+                      class="bg-emerald-500/20 text-emerald-400 text-xs px-2 py-1 rounded-full"
+                    >
+                      <i class="fas fa-link mr-1"></i>Morning Coffee
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reminder 2 - Upcoming -->
+              <div class="relative pl-8 pb-6 border-l-2 border-gray-700">
+                <div
+                  class="absolute -left-2 top-0 w-4 h-4 bg-amber-500 rounded-full animate-pulse"
+                ></div>
+                <div
+                  class="bg-gray-800 border border-amber-500/30 rounded-xl p-4"
+                >
+                  <div class="flex items-start justify-between mb-2">
+                    <div class="flex items-center space-x-3">
+                      <i class="fas fa-bell text-amber-400 text-xl"></i>
+                      <div>
+                        <h3 class="text-gray-100 font-semibold">
+                          Review investment portfolio
+                        </h3>
+                        <p class="text-amber-400 text-sm font-medium">
+                          In 45 minutes
+                        </p>
+                      </div>
+                    </div>
+                    <span class="text-gray-400 text-xs">12:30 PM</span>
+                  </div>
+                  <div class="flex items-center space-x-2 mt-3">
+                    <span
+                      class="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-full"
+                    >
+                      <i class="fas fa-mobile-alt mr-1"></i>Push + Sound
+                    </span>
+                    <span
+                      class="bg-indigo-500/20 text-indigo-400 text-xs px-2 py-1 rounded-full"
+                    >
+                      <i class="fas fa-link mr-1"></i>Lunch Break
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reminder 3 - Buddy Alert -->
+              <div class="relative pl-8 pb-6 border-l-2 border-gray-700">
+                <div
+                  class="absolute -left-2 top-0 w-4 h-4 bg-purple-500 rounded-full"
+                ></div>
+                <div
+                  class="bg-gray-800 border border-purple-500/30 rounded-xl p-4"
+                >
+                  <div class="flex items-start justify-between mb-2">
+                    <div class="flex items-center space-x-3">
+                      <i
+                        class="fas fa-user-friends text-purple-400 text-xl"
+                      ></i>
+                      <div>
+                        <h3 class="text-gray-100 font-semibold">
+                          Buddy Check-In
+                        </h3>
+                        <p class="text-gray-400 text-sm">
+                          Sarah just completed her habit!
+                        </p>
+                      </div>
+                    </div>
+                    <span class="text-gray-400 text-xs">03:00 PM</span>
+                  </div>
+                  <div class="flex items-center space-x-2 mt-3">
+                    <span
+                      class="bg-purple-500/20 text-purple-400 text-xs px-2 py-1 rounded-full"
+                    >
+                      <i class="fas fa-users mr-1"></i>Buddy Alert
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reminder 4 -->
+              <div class="relative pl-8 pb-6 border-l-2 border-gray-700">
+                <div
+                  class="absolute -left-2 top-0 w-4 h-4 bg-gray-600 rounded-full"
+                ></div>
+                <div class="bg-gray-800 border border-gray-700 rounded-xl p-4">
+                  <div class="flex items-start justify-between mb-2">
+                    <div class="flex items-center space-x-3">
+                      <i class="fas fa-bell text-gray-400 text-xl"></i>
+                      <div>
+                        <h3 class="text-gray-100 font-semibold">
+                          Learn investing concept
+                        </h3>
+                        <p class="text-gray-400 text-sm">During commute home</p>
+                      </div>
+                    </div>
+                    <span class="text-gray-400 text-xs">06:00 PM</span>
+                  </div>
+                  <div class="flex items-center space-x-2 mt-3">
+                    <span
+                      class="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-full"
+                    >
+                      <i class="fas fa-mobile-alt mr-1"></i>Push
+                    </span>
+                    <span
+                      class="bg-rose-500/20 text-rose-400 text-xs px-2 py-1 rounded-full"
+                    >
+                      <i class="fas fa-link mr-1"></i>Commute Home
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reminder 5 -->
+              <div class="relative pl-8">
+                <div
+                  class="absolute -left-2 top-0 w-4 h-4 bg-gray-600 rounded-full"
+                ></div>
+                <div class="bg-gray-800 border border-gray-700 rounded-xl p-4">
+                  <div class="flex items-start justify-between mb-2">
+                    <div class="flex items-center space-x-3">
+                      <i class="fas fa-bell text-gray-400 text-xl"></i>
+                      <div>
+                        <h3 class="text-gray-100 font-semibold">
+                          Track daily expenses
+                        </h3>
+                        <p class="text-gray-400 text-sm">
+                          Evening wind-down routine
+                        </p>
+                      </div>
+                    </div>
+                    <span class="text-gray-400 text-xs">09:00 PM</span>
+                  </div>
+                  <div class="flex items-center space-x-2 mt-3">
+                    <span
+                      class="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-full"
+                    >
+                      <i class="fas fa-mobile-alt mr-1"></i>Push
+                    </span>
+                    <span
+                      class="bg-amber-500/20 text-amber-400 text-xs px-2 py-1 rounded-full"
+                    >
+                      <i class="fas fa-link mr-1"></i>Evening Wind-Down
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+          <!-- Quick Settings -->
+          <section
+            class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-lg"
+          >
+            <h3 class="text-lg font-bold text-gray-100 mb-4">
+              Notification Settings
+            </h3>
+
+            <div class="space-y-4">
+              <!-- Setting 1 -->
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-300 font-medium text-sm">
+                    Push Notifications
+                  </p>
+                  <p class="text-gray-500 text-xs">Send habit reminders</p>
+                </div>
+                <div
+                  class="w-12 h-6 bg-gradient-to-r from-emerald-500 to-lime-500 rounded-full p-0.5 cursor-pointer"
+                >
+                  <div
+                    class="w-5 h-5 bg-white rounded-full shadow-lg ml-auto"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Setting 2 -->
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-300 font-medium text-sm">Sound Alerts</p>
+                  <p class="text-gray-500 text-xs">Play notification sound</p>
+                </div>
+                <div
+                  class="w-12 h-6 bg-gradient-to-r from-emerald-500 to-lime-500 rounded-full p-0.5 cursor-pointer"
+                >
+                  <div
+                    class="w-5 h-5 bg-white rounded-full shadow-lg ml-auto"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Setting 3 -->
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-300 font-medium text-sm">Buddy Alerts</p>
+                  <p class="text-gray-500 text-xs">
+                    Get notified of buddy progress
+                  </p>
+                </div>
+                <div
+                  class="w-12 h-6 bg-gradient-to-r from-emerald-500 to-lime-500 rounded-full p-0.5 cursor-pointer"
+                >
+                  <div
+                    class="w-5 h-5 bg-white rounded-full shadow-lg ml-auto"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Setting 4 -->
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-300 font-medium text-sm">
+                    Encouragement Messages
+                  </p>
+                  <p class="text-gray-500 text-xs">Motivational reminders</p>
+                </div>
+                <div
+                  class="w-12 h-6 bg-gradient-to-r from-emerald-500 to-lime-500 rounded-full p-0.5 cursor-pointer"
+                >
+                  <div
+                    class="w-5 h-5 bg-white rounded-full shadow-lg ml-auto"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Multiple Alarm Configuration -->
+          <section
+            class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-lg"
+          >
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-gray-100">Staggered Alarms</h3>
+              <i class="fas fa-info-circle text-gray-500 cursor-pointer"></i>
+            </div>
+
+            <div
+              class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 mb-4"
+            >
+              <p class="text-blue-300 text-xs">
+                <i class="fas fa-lightbulb mr-1"></i>
+                Set multiple reminders for the same habit to increase
+                follow-through
+              </p>
+            </div>
+
+            <!-- Example Habit with Multiple Alarms -->
+            <div class="bg-gray-800 rounded-lg p-4 mb-4">
+              <p class="text-gray-300 font-semibold mb-3 text-sm">
+                Review investment portfolio
+              </p>
+
+              <div class="space-y-2">
+                <!-- Alarm 1 -->
+                <div
+                  class="flex items-center justify-between bg-gray-900 rounded-lg p-2"
+                >
+                  <div class="flex items-center space-x-2">
+                    <i class="fas fa-bell text-emerald-400 text-sm"></i>
+                    <span class="text-gray-300 text-sm">12:30 PM</span>
+                  </div>
+                  <span class="text-gray-500 text-xs">First reminder</span>
+                </div>
+
+                <!-- Alarm 2 -->
+                <div
+                  class="flex items-center justify-between bg-gray-900 rounded-lg p-2"
+                >
+                  <div class="flex items-center space-x-2">
+                    <i class="fas fa-bell text-amber-400 text-sm"></i>
+                    <span class="text-gray-300 text-sm">12:45 PM</span>
+                  </div>
+                  <span class="text-gray-500 text-xs">Follow-up</span>
+                </div>
+
+                <!-- Alarm 3 -->
+                <div
+                  class="flex items-center justify-between bg-gray-900 rounded-lg p-2"
+                >
+                  <div class="flex items-center space-x-2">
+                    <i class="fas fa-bell text-red-400 text-sm"></i>
+                    <span class="text-gray-300 text-sm">01:00 PM</span>
+                  </div>
+                  <span class="text-gray-500 text-xs">Final reminder</span>
+                </div>
+              </div>
+
+              <button
+                class="w-full mt-3 bg-gray-700 hover:bg-gray-600 text-gray-300 text-xs py-2 rounded-lg transition"
+              >
+                <i class="fas fa-edit mr-1"></i>
+                Edit Alarms
+              </button>
+            </div>
+
+            <button
+              class="w-full bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 font-medium py-2 rounded-lg transition text-sm"
+            >
+              <i class="fas fa-plus-circle mr-2"></i>
+              Configure Alarms
+            </button>
+          </section>
+
+          <!-- Digital Detox Stats -->
+          <section
+            class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-lg"
+          >
+            <h3 class="text-lg font-bold text-gray-100 mb-4">
+              Digital Detox Stats
+            </h3>
+
+            <div class="space-y-4">
+              <!-- Stat 1 -->
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-gray-400 text-sm"
+                    >Focus Time This Week</span
+                  >
+                  <span class="text-emerald-400 font-bold text-sm"
+                    >12.5 hrs</span
+                  >
+                </div>
+                <div class="bg-gray-800 rounded-full h-2 overflow-hidden">
+                  <div
+                    class="bg-gradient-to-r from-emerald-500 to-lime-500 h-full rounded-full"
+                    style="width: 63%"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Stat 2 -->
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-gray-400 text-sm"
+                    >Distractions Blocked</span
+                  >
+                  <span class="text-purple-400 font-bold text-sm">147</span>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-3">
+                  <div class="flex items-center justify-between">
+                    <div class="text-center">
+                      <p class="text-gray-500 text-xs mb-1">Social Media</p>
+                      <p class="text-gray-300 font-bold">89</p>
+                    </div>
+                    <div class="text-center">
+                      <p class="text-gray-500 text-xs mb-1">Entertainment</p>
+                      <p class="text-gray-300 font-bold">42</p>
+                    </div>
+                    <div class="text-center">
+                      <p class="text-gray-500 text-xs mb-1">News</p>
+                      <p class="text-gray-300 font-bold">16</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Achievement Badge -->
+              <div
+                class="bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-lg p-4 text-center"
+              >
+                <i class="fas fa-trophy text-amber-400 text-3xl mb-2"></i>
+                <p class="text-amber-300 font-semibold text-sm">
+                  Focus Champion
+                </p>
+                <p class="text-gray-400 text-xs mt-1">7-day focus streak! 🔥</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 mt-16 py-8">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p class="text-gray-500 text-sm">
+          HabitForge - Building resilient habits, one day at a time
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

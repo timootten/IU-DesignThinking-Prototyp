@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Habit - HabitForge</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "emerald-glow": "#10b981",
+              "lime-glow": "#84cc16",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-950 text-gray-100 min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo & Brand -->
+          <div class="flex items-center space-x-3">
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center"
+            >
+              <i class="fas fa-bolt text-gray-900 text-xl"></i>
+            </div>
+            <span
+              class="text-xl font-bold bg-gradient-to-r from-emerald-400 to-lime-400 bg-clip-text text-transparent"
+            >
+              HabitForge
+            </span>
+          </div>
+
+          <!-- Navigation Links -->
+          <div class="flex items-center space-x-6">
+            <a
+              href="index.html"
+              class="text-gray-400 hover:text-gray-200 transition"
+            >
+              <i class="fas fa-home mr-2"></i>Dashboard
+            </a>
+            <a href="add-habit.html" class="text-emerald-400 font-medium">
+              <i class="fas fa-plus-circle mr-2"></i>Add Habit
+            </a>
+            <a
+              href="reminders.html"
+              class="text-gray-400 hover:text-gray-200 transition"
+            >
+              <i class="fas fa-bell mr-2"></i>Reminders
+            </a>
+            <div
+              class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-700 transition"
+            >
+              <i class="fas fa-user text-gray-400"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <a
+          href="index.html"
+          class="text-gray-400 hover:text-emerald-400 transition text-sm inline-flex items-center mb-4"
+        >
+          <i class="fas fa-arrow-left mr-2"></i>
+          Back to Dashboard
+        </a>
+        <h1 class="text-3xl font-bold text-gray-100 mb-2">Create New Habit</h1>
+        <p class="text-gray-400">
+          Build lasting change through small, consistent actions
+        </p>
+      </div>
+
+      <!-- Progress Stepper -->
+      <div class="mb-10">
+        <div class="flex items-center justify-between max-w-2xl mx-auto">
+          <!-- Step 1 -->
+          <div class="flex flex-col items-center flex-1">
+            <div
+              class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg"
+            >
+              1
+            </div>
+            <p class="text-emerald-400 text-sm font-medium mt-2">Identity</p>
+          </div>
+
+          <!-- Connector Line -->
+          <div
+            class="h-1 bg-gradient-to-r from-emerald-500 to-lime-500 flex-1 mx-2"
+          ></div>
+
+          <!-- Step 2 -->
+          <div class="flex flex-col items-center flex-1">
+            <div
+              class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg"
+            >
+              2
+            </div>
+            <p class="text-emerald-400 text-sm font-medium mt-2">Breakdown</p>
+          </div>
+
+          <!-- Connector Line -->
+          <div
+            class="h-1 bg-gradient-to-r from-emerald-500 to-lime-500 flex-1 mx-2"
+          ></div>
+
+          <!-- Step 3 -->
+          <div class="flex flex-col items-center flex-1">
+            <div
+              class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg"
+            >
+              3
+            </div>
+            <p class="text-emerald-400 text-sm font-medium mt-2">Schedule</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Container -->
+      <div
+        class="bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl p-8"
+      >
+        <!-- Step 1: Identity Statement -->
+        <section class="mb-10 pb-10 border-b border-gray-800">
+          <div class="flex items-center space-x-3 mb-6">
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center"
+            >
+              <span class="text-white font-bold">1</span>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-100">
+              Define Your Identity
+            </h2>
+          </div>
+
+          <div
+            class="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 mb-6"
+          >
+            <div class="flex items-start space-x-3">
+              <i class="fas fa-lightbulb text-blue-400 text-xl mt-1"></i>
+              <div>
+                <p class="text-blue-300 text-sm font-semibold mb-1">
+                  Identity-Based Goal Setting
+                </p>
+                <p class="text-gray-400 text-sm">
+                  Instead of "I want to save money," try "I am an investor."
+                  This shifts your mindset from doing to being.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Identity Statement Input -->
+          <div class="space-y-4">
+            <div>
+              <label class="block text-gray-300 font-medium mb-2"
+                >I am a/an...</label
+              >
+              <input
+                type="text"
+                placeholder="e.g., Investor, Athlete, Writer, Entrepreneur"
+                class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"
+              />
+            </div>
+
+            <div>
+              <label class="block text-gray-300 font-medium mb-2"
+                >My "why" (motivation behind this identity)</label
+              >
+              <textarea
+                rows="3"
+                placeholder="e.g., I want financial freedom to support my family and travel the world"
+                class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition resize-none"
+              ></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 2: Goal Breakdown -->
+        <section class="mb-10 pb-10 border-b border-gray-800">
+          <div class="flex items-center space-x-3 mb-6">
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center"
+            >
+              <span class="text-white font-bold">2</span>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-100">Break It Down</h2>
+          </div>
+
+          <div
+            class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 mb-6"
+          >
+            <div class="flex items-start space-x-3">
+              <i class="fas fa-puzzle-piece text-amber-400 text-xl mt-1"></i>
+              <div>
+                <p class="text-amber-300 text-sm font-semibold mb-1">
+                  Micro-Tasks Are Key
+                </p>
+                <p class="text-gray-400 text-sm">
+                  Big goals are overwhelming. Split them into tiny, achievable
+                  daily steps that take less than 5 minutes.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Large Goal Input -->
+          <div class="space-y-6">
+            <div>
+              <label class="block text-gray-300 font-medium mb-2"
+                >Your Big Goal</label
+              >
+              <input
+                type="text"
+                placeholder="e.g., Build a $10,000 emergency fund"
+                class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"
+              />
+            </div>
+
+            <!-- Micro-Tasks -->
+            <div>
+              <label class="block text-gray-300 font-medium mb-3"
+                >Daily Micro-Tasks (Small Steps)</label
+              >
+
+              <!-- Micro-Task 1 -->
+              <div
+                class="bg-gray-800 border border-gray-700 rounded-xl p-4 mb-3"
+              >
+                <div class="flex items-start space-x-3">
+                  <i
+                    class="fas fa-grip-vertical text-gray-600 mt-3 cursor-move"
+                  ></i>
+                  <div class="flex-1 space-y-3">
+                    <input
+                      type="text"
+                      placeholder="Micro-task #1: e.g., Save $10 automatically"
+                      value="Save $10 automatically"
+                      class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition text-sm"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Why is this important?"
+                      value="Small amounts compound over time"
+                      class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition text-sm"
+                    />
+                  </div>
+                  <button
+                    class="text-gray-600 hover:text-red-400 transition mt-2"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Micro-Task 2 -->
+              <div
+                class="bg-gray-800 border border-gray-700 rounded-xl p-4 mb-3"
+              >
+                <div class="flex items-start space-x-3">
+                  <i
+                    class="fas fa-grip-vertical text-gray-600 mt-3 cursor-move"
+                  ></i>
+                  <div class="flex-1 space-y-3">
+                    <input
+                      type="text"
+                      placeholder="Micro-task #2: e.g., Track daily expenses"
+                      value="Track daily expenses"
+                      class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition text-sm"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Why is this important?"
+                      value="Awareness of spending patterns"
+                      class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition text-sm"
+                    />
+                  </div>
+                  <button
+                    class="text-gray-600 hover:text-red-400 transition mt-2"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Micro-Task 3 -->
+              <div
+                class="bg-gray-800 border border-gray-700 rounded-xl p-4 mb-4"
+              >
+                <div class="flex items-start space-x-3">
+                  <i
+                    class="fas fa-grip-vertical text-gray-600 mt-3 cursor-move"
+                  ></i>
+                  <div class="flex-1 space-y-3">
+                    <input
+                      type="text"
+                      placeholder="Micro-task #3: e.g., Read 10 pages about investing"
+                      value="Read 10 pages about investing"
+                      class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition text-sm"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Why is this important?"
+                      value="Knowledge leads to better decisions"
+                      class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition text-sm"
+                    />
+                  </div>
+                  <button
+                    class="text-gray-600 hover:text-red-400 transition mt-2"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Add More Button -->
+              <button
+                class="w-full bg-gray-800 hover:bg-gray-700 border-2 border-dashed border-gray-700 hover:border-emerald-500 text-gray-400 hover:text-emerald-400 font-medium py-3 rounded-xl transition"
+              >
+                <i class="fas fa-plus-circle mr-2"></i>
+                Add Another Micro-Task
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 3: Scheduling & Context -->
+        <section class="mb-8">
+          <div class="flex items-center space-x-3 mb-6">
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-lg flex items-center justify-center"
+            >
+              <span class="text-white font-bold">3</span>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-100">Schedule & Stack</h2>
+          </div>
+
+          <div
+            class="bg-purple-500/10 border border-purple-500/30 rounded-xl p-4 mb-6"
+          >
+            <div class="flex items-start space-x-3">
+              <i class="fas fa-link text-purple-400 text-xl mt-1"></i>
+              <div>
+                <p class="text-purple-300 text-sm font-semibold mb-1">
+                  Habit Stacking Power
+                </p>
+                <p class="text-gray-400 text-sm">
+                  Link your new habit to an existing routine. After [EXISTING
+                  HABIT], I will [NEW HABIT].
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <!-- Habit Stacking -->
+            <div>
+              <label class="block text-gray-300 font-medium mb-3"
+                >Link to Existing Habit (Habit Stacking)</label
+              >
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-gray-500 text-sm mb-2"
+                    >Existing Habit / Routine</label
+                  >
+                  <select
+                    class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"
+                  >
+                    <option>Select an existing habit...</option>
+                    <option>Morning Coffee</option>
+                    <option>Lunch Break</option>
+                    <option>Evening Wind-Down</option>
+                    <option>Commute to Work</option>
+                    <option>After Workout</option>
+                    <option>Before Bed</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-gray-500 text-sm mb-2"
+                    >New Habit to Stack</label
+                  >
+                  <select
+                    class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"
+                  >
+                    <option>Select a micro-task...</option>
+                    <option>Save $10 automatically</option>
+                    <option>Track daily expenses</option>
+                    <option>Read 10 pages about investing</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Visual Representation -->
+              <div
+                class="mt-4 bg-gray-800 rounded-xl p-4 flex items-center space-x-4"
+              >
+                <div
+                  class="bg-blue-500/20 text-blue-400 px-4 py-2 rounded-lg border border-blue-500/30 font-medium"
+                >
+                  Morning Coffee
+                </div>
+                <i class="fas fa-arrow-right text-emerald-400 text-xl"></i>
+                <div
+                  class="bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-lg border border-emerald-500/30 font-medium"
+                >
+                  Read 10 pages
+                </div>
+              </div>
+            </div>
+
+            <!-- Time Blocking -->
+            <div>
+              <label class="block text-gray-300 font-medium mb-3"
+                >Preferred Time of Day</label
+              >
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div
+                  class="bg-gray-800 hover:bg-emerald-500/20 border-2 border-emerald-500 rounded-xl p-4 text-center cursor-pointer transition"
+                >
+                  <i class="fas fa-sunrise text-emerald-400 text-2xl mb-2"></i>
+                  <p class="text-emerald-400 font-semibold text-sm">Morning</p>
+                  <p class="text-gray-500 text-xs mt-1">6AM - 12PM</p>
+                </div>
+                <div
+                  class="bg-gray-800 hover:bg-gray-700 border-2 border-gray-700 hover:border-emerald-500 rounded-xl p-4 text-center cursor-pointer transition"
+                >
+                  <i class="fas fa-sun text-amber-400 text-2xl mb-2"></i>
+                  <p class="text-gray-400 font-semibold text-sm">Afternoon</p>
+                  <p class="text-gray-500 text-xs mt-1">12PM - 6PM</p>
+                </div>
+                <div
+                  class="bg-gray-800 hover:bg-gray-700 border-2 border-gray-700 hover:border-emerald-500 rounded-xl p-4 text-center cursor-pointer transition"
+                >
+                  <i class="fas fa-moon text-indigo-400 text-2xl mb-2"></i>
+                  <p class="text-gray-400 font-semibold text-sm">Evening</p>
+                  <p class="text-gray-500 text-xs mt-1">6PM - 10PM</p>
+                </div>
+                <div
+                  class="bg-gray-800 hover:bg-gray-700 border-2 border-gray-700 hover:border-emerald-500 rounded-xl p-4 text-center cursor-pointer transition"
+                >
+                  <i class="fas fa-clock text-purple-400 text-2xl mb-2"></i>
+                  <p class="text-gray-400 font-semibold text-sm">Anytime</p>
+                  <p class="text-gray-500 text-xs mt-1">Flexible</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Specific Time -->
+            <div>
+              <label class="block text-gray-300 font-medium mb-2"
+                >Specific Time (Optional)</label
+              >
+              <input
+                type="time"
+                value="07:30"
+                class="w-full md:w-64 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"
+              />
+            </div>
+
+            <!-- Frequency -->
+            <div>
+              <label class="block text-gray-300 font-medium mb-3"
+                >Frequency</label
+              >
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div
+                  class="bg-gray-800 hover:bg-emerald-500/20 border-2 border-emerald-500 rounded-xl p-3 text-center cursor-pointer transition"
+                >
+                  <p class="text-emerald-400 font-semibold text-sm">Daily</p>
+                </div>
+                <div
+                  class="bg-gray-800 hover:bg-gray-700 border-2 border-gray-700 hover:border-emerald-500 rounded-xl p-3 text-center cursor-pointer transition"
+                >
+                  <p class="text-gray-400 font-semibold text-sm">Weekdays</p>
+                </div>
+                <div
+                  class="bg-gray-800 hover:bg-gray-700 border-2 border-gray-700 hover:border-emerald-500 rounded-xl p-3 text-center cursor-pointer transition"
+                >
+                  <p class="text-gray-400 font-semibold text-sm">Weekends</p>
+                </div>
+                <div
+                  class="bg-gray-800 hover:bg-gray-700 border-2 border-gray-700 hover:border-emerald-500 rounded-xl p-3 text-center cursor-pointer transition"
+                >
+                  <p class="text-gray-400 font-semibold text-sm">Custom</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Peak Productivity Hours -->
+            <div>
+              <label class="block text-gray-300 font-medium mb-2">
+                Peak Productivity Hours
+                <span class="text-gray-500 text-sm font-normal ml-2"
+                  >(When do you have the most energy?)</span
+                >
+              </label>
+              <div class="bg-gray-800 rounded-xl p-4">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-gray-400 text-sm">06:00 AM</span>
+                  <span class="text-gray-400 text-sm">12:00 PM</span>
+                  <span class="text-gray-400 text-sm">06:00 PM</span>
+                  <span class="text-gray-400 text-sm">12:00 AM</span>
+                </div>
+                <!-- Visual Timeline -->
+                <div
+                  class="relative h-12 bg-gray-900 rounded-lg overflow-hidden"
+                >
+                  <div
+                    class="absolute top-0 left-[25%] w-[37.5%] h-full bg-gradient-to-r from-emerald-500 to-lime-500 opacity-50"
+                  ></div>
+                  <div
+                    class="absolute top-0 left-0 w-full h-full flex items-center px-2"
+                  >
+                    <div
+                      class="w-full flex justify-between text-xs text-gray-600"
+                    >
+                      <span>|</span><span>|</span><span>|</span><span>|</span
+                      ><span>|</span><span>|</span> <span>|</span><span>|</span
+                      ><span>|</span><span>|</span><span>|</span><span>|</span>
+                    </div>
+                  </div>
+                </div>
+                <p
+                  class="text-center text-emerald-400 text-sm mt-3 font-medium"
+                >
+                  <i class="fas fa-bolt mr-1"></i>
+                  Peak Energy: 9:00 AM - 3:00 PM
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <div
+          class="flex items-center justify-between pt-6 border-t border-gray-800"
+        >
+          <button
+            class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold px-6 py-3 rounded-xl transition"
+          >
+            <i class="fas fa-save mr-2"></i>
+            Save as Draft
+          </button>
+          <button
+            class="bg-gradient-to-r from-emerald-500 to-lime-500 hover:from-emerald-600 hover:to-lime-600 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-emerald-500/30 transition"
+          >
+            <i class="fas fa-rocket mr-2"></i>
+            Create Habit
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 mt-16 py-8">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p class="text-gray-500 text-sm">
+          HabitForge - Building resilient habits, one day at a time
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

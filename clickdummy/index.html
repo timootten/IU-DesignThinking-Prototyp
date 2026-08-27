@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HabitForge — Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: { "emerald-glow": "#10b981", "lime-glow": "#84cc16" },
+          },
+        },
+      };
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .habit-card {
+        transition: all 0.25s ease;
+      }
+      .habit-card:hover {
+        transform: translateY(-2px);
+      }
+      .streak-glow {
+        text-shadow: 0 0 8px rgba(250, 204, 21, 0.4);
+      }
+      @keyframes pop {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.3);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .pop {
+        animation: pop 0.35s ease;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-in-up {
+        animation: fadeInUp 0.4s ease forwards;
+      }
+      @keyframes growTree {
+        from {
+          transform: scale(0.7);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .tree-animate {
+        animation: growTree 0.6s ease;
+      }
+      .glass {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-gray-50 text-gray-800 dark:bg-gray-950 dark:text-gray-100 min-h-screen pb-24 transition-colors duration-300"
+  >
+    <!-- ─── Top Bar ─── -->
+    <header
+      class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 glass border-b border-gray-200 dark:border-gray-800"
+    >
+      <div
+        class="max-w-2xl mx-auto flex items-center justify-between px-4 h-14"
+      >
+        <div class="flex items-center gap-2">
+          <div
+            class="w-9 h-9 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-xl flex items-center justify-center"
+          >
+            <i class="fas fa-bolt text-white text-sm"></i>
+          </div>
+          <span
+            class="text-lg font-extrabold bg-gradient-to-r from-emerald-500 to-lime-500 bg-clip-text text-transparent"
+            >HabitForge</span
+          >
+        </div>
+        <button
+          onclick="toggleTheme()"
+          class="w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:scale-110 transition"
+        >
+          <i id="theme-icon" class="fas fa-sun text-yellow-400"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="max-w-2xl mx-auto px-4 pt-6 space-y-6">
+      <!-- ─── Daily Quote ─── -->
+      <section
+        id="quote-section"
+        class="bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-200 dark:border-gray-800 shadow-sm fade-in-up"
+      >
+        <div class="flex items-start gap-3">
+          <div
+            class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5"
+          >
+            <i
+              class="fas fa-quote-left text-emerald-600 dark:text-emerald-400"
+            ></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p
+              id="quote-text"
+              class="text-gray-700 dark:text-gray-300 italic leading-relaxed"
+            ></p>
+            <p
+              id="quote-author"
+              class="text-sm text-gray-400 mt-1.5 font-medium"
+            ></p>
+          </div>
+          <button
+            id="quote-fav-btn"
+            onclick="handleFavQuote()"
+            class="flex-shrink-0 w-9 h-9 rounded-full hover:bg-red-100 dark:hover:bg-red-500/20 flex items-center justify-center transition"
+          >
+            <i id="quote-heart" class="far fa-heart text-gray-400 text-lg"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- ─── Growing Tree (Progress) ─── -->
+      <section
+        id="tree-section"
+        class="bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-200 dark:border-gray-800 shadow-sm fade-in-up"
+        style="animation-delay: 0.1s"
+      >
+        <div class="flex items-center justify-between mb-3">
+          <h2
+            class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+          >
+            Today's Growth
+          </h2>
+          <span
+            id="progress-text"
+            class="text-sm font-semibold text-emerald-600 dark:text-emerald-400"
+          ></span>
+        </div>
+        <div class="flex items-center gap-4">
+          <div id="tree-emoji" class="text-5xl tree-animate"></div>
+          <div class="flex-1">
+            <div
+              class="h-3 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden"
+            >
+              <div
+                id="progress-bar"
+                class="h-full bg-gradient-to-r from-emerald-500 to-lime-500 rounded-full transition-all duration-700 ease-out"
+                style="width: 0%"
+              ></div>
+            </div>
+            <p id="tree-label" class="text-xs text-gray-400 mt-1.5"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Streak Freeze Info ─── -->
+      <section
+        class="bg-amber-50 dark:bg-yellow-500/10 rounded-2xl p-4 border border-amber-200 dark:border-yellow-500/20 flex items-center gap-3 fade-in-up"
+        style="animation-delay: 0.15s"
+      >
+        <div
+          class="w-10 h-10 bg-amber-100 dark:bg-yellow-500/20 rounded-xl flex items-center justify-center flex-shrink-0"
+        >
+          <i class="fas fa-shield-alt text-amber-500 dark:text-yellow-400"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-amber-700 dark:text-yellow-300">
+            Streak Freeze
+          </p>
+          <p class="text-xs text-amber-600/70 dark:text-yellow-400/60">
+            Missing 1 day won't break your streak —
+            <span id="freeze-count" class="font-bold">2</span> freezes available
+          </p>
+        </div>
+      </section>
+
+      <!-- ─── Today's Habits ─── -->
+      <section class="fade-in-up" style="animation-delay: 0.2s">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100">
+            Today's Habits
+          </h2>
+          <a
+            href="add-edit.html"
+            class="text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1"
+          >
+            <i class="fas fa-plus text-xs"></i> Add
+          </a>
+        </div>
+        <div id="habits-list" class="space-y-3"></div>
+        <div id="empty-state" class="hidden text-center py-12">
+          <div class="text-5xl mb-3">🌱</div>
+          <p class="text-gray-400 font-medium">
+            No habits yet — plant your first seed!
+          </p>
+          <a
+            href="add-edit.html"
+            class="inline-flex items-center gap-2 mt-4 px-5 py-2.5 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition"
+          >
+            <i class="fas fa-plus"></i> Create Habit
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <!-- ─── Bottom Navigation ─── -->
+    <nav
+      id="bottom-nav"
+      class="fixed bottom-0 inset-x-0 bg-white/90 dark:bg-gray-900/90 glass border-t border-gray-200 dark:border-gray-800 z-50"
+    ></nav>
+
+    <script src="app.js"></script>
+    <script>
+      // ─── Init ───
+      (function init() {
+        initTheme();
+        renderBottomNav("home");
+        renderQuote();
+        renderHabits();
+      })();
+
+      // ─── Quote ───
+      function renderQuote() {
+        const q = getDailyQuote();
+        document.getElementById("quote-text").textContent = `"${q.text}"`;
+        document.getElementById("quote-author").textContent = `— ${q.author}`;
+        updateHeartIcon(q.index);
+      }
+
+      function handleFavQuote() {
+        const q = getDailyQuote();
+        const isFav = toggleFavQuote(q.index);
+        updateHeartIcon(q.index);
+        const btn = document.getElementById("quote-fav-btn");
+        btn.classList.add("pop");
+        setTimeout(() => btn.classList.remove("pop"), 400);
+      }
+
+      function updateHeartIcon(idx) {
+        const heart = document.getElementById("quote-heart");
+        const fav = isQuoteFav(idx);
+        heart.className = fav
+          ? "fas fa-heart text-red-500 text-lg"
+          : "far fa-heart text-gray-400 text-lg";
+      }
+
+      // ─── Habits ───
+      function renderHabits() {
+        const data = getData();
+        const tasks = getAllTasks(data);
+        const list = document.getElementById("habits-list");
+        const empty = document.getElementById("empty-state");
+
+        if (!tasks.length) {
+          list.innerHTML = "";
+          empty.classList.remove("hidden");
+          updateTree(data);
+          updateFreezeCount(data);
+          return;
+        }
+        empty.classList.add("hidden");
+
+        // Group tasks by habit
+        const groups = {};
+        tasks.forEach((t) => {
+          if (!groups[t.habitId])
+            groups[t.habitId] = {
+              identity: t.habitIdentity,
+              icon: t.habitIcon,
+              linked: t.linkedHabit,
+              time: t.specificTime,
+              timeOfDay: t.timeOfDay,
+              tasks: [],
+            };
+          groups[t.habitId].tasks.push(t);
+        });
+
+        list.innerHTML = Object.entries(groups)
+          .map(([hid, g]) => {
+            const streak = calcStreak(
+              g.tasks.map((t) => t.id),
+              data,
+            );
+            const allDone = g.tasks.every((t) => isTaskCompleted(t.id, data));
+            return `
+        <div class="habit-card bg-white dark:bg-gray-900 border ${allDone ? "border-emerald-300 dark:border-emerald-500/40" : "border-gray-200 dark:border-gray-800"} rounded-2xl p-4 shadow-sm">
+          <!-- Header -->
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl ${allDone ? "bg-emerald-100 dark:bg-emerald-500/20" : "bg-gray-100 dark:bg-gray-800"} flex items-center justify-center">
+                <i class="fas ${g.icon} ${allDone ? "text-emerald-600 dark:text-emerald-400" : "text-gray-400"}"></i>
+              </div>
+              <div>
+                <span class="font-bold text-sm text-gray-800 dark:text-gray-100">I am a ${g.identity}</span>
+                ${g.linked ? `<p class="text-[11px] text-blue-500 dark:text-blue-400"><i class="fas fa-link mr-1"></i>After: ${g.linked}</p>` : ""}
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <!-- Streak in yellow -->
+              <div class="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-500/10 border border-yellow-200 dark:border-yellow-500/20 rounded-lg px-2.5 py-1">
+                <i class="fas fa-fire text-yellow-500 streak-glow text-sm"></i>
+                <span class="text-yellow-600 dark:text-yellow-400 font-bold text-sm streak-glow">${streak}</span>
+                <span class="text-yellow-500/60 text-[10px] font-medium">days</span>
+              </div>
+              <a href="add-edit.html?id=${hid}" class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <i class="fas fa-pen text-xs"></i>
+              </a>
+            </div>
+          </div>
+          <!-- Tasks -->
+          <div class="space-y-2">
+            ${g.tasks
+              .map((t) => {
+                const done = isTaskCompleted(t.id, data);
+                return `
+              <button onclick="handleToggle('${t.id}')" class="w-full flex items-start gap-3 p-2.5 rounded-xl ${done ? "bg-emerald-50 dark:bg-emerald-500/10" : "bg-gray-50 dark:bg-gray-800/50"} hover:bg-gray-100 dark:hover:bg-gray-800 transition text-left">
+                <div class="flex-shrink-0 mt-0.5">
+                  <div class="w-5 h-5 rounded-md border-2 ${done ? "bg-emerald-500 border-emerald-500" : "border-gray-300 dark:border-gray-600"} flex items-center justify-center transition">
+                    ${done ? '<i class="fas fa-check text-white text-[10px]"></i>' : ""}
+                  </div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium ${done ? "line-through text-gray-400 dark:text-gray-500" : "text-gray-700 dark:text-gray-200"}">${t.name}</p>
+                  <p class="text-xs ${done ? "text-gray-300 dark:text-gray-600" : "text-gray-400 dark:text-gray-500"} mt-0.5">${t.why}</p>
+                </div>
+                <span class="text-[11px] text-gray-400 flex-shrink-0 mt-0.5">${formatTime(g.time)}</span>
+              </button>`;
+              })
+              .join("")}
+          </div>
+        </div>`;
+          })
+          .join("");
+
+        updateTree(data);
+        updateFreezeCount(data);
+      }
+
+      function handleToggle(taskId) {
+        const nowDone = toggleTaskCompletion(taskId);
+        renderHabits();
+        // Check if ALL tasks are done → confetti
+        const data = getData();
+        const prog = getTodayProgress(data);
+        if (prog.pct === 100) {
+          setTimeout(() => fireConfetti(), 300);
+        }
+      }
+
+      // ─── Tree ───
+      function updateTree(data) {
+        const prog = getTodayProgress(data);
+        const stage = getTreeStage(prog.pct);
+        const ts = TREE_STAGES[stage];
+        document.getElementById("tree-emoji").textContent = ts.emoji;
+        document.getElementById("tree-label").textContent = ts.desc;
+        document.getElementById("progress-bar").style.width = prog.pct + "%";
+        document.getElementById("progress-text").textContent =
+          `${prog.done}/${prog.total} tasks`;
+      }
+
+      // ─── Freeze Count ───
+      function updateFreezeCount(data) {
+        document.getElementById("freeze-count").textContent =
+          data.streakFreezes.available;
+      }
+    </script>
+  </body>
+</html>
